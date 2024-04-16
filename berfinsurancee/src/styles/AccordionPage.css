@@ -1,0 +1,62 @@
+
+
+
+    .accordion-button:not(.collapsed) {
+        color: var(--bs-accordion-active-color);
+        background-image: url(../assets/shape.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+    .accordion-button{
+        width: 1110px;
+        height: 72px;
+    }
+    .insurance_detail {
+        width: 1583px;
+        height: 636.94px;
+    }
+    
+    .sss {
+        width: 100%;
+        margin: 0 auto;
+    }
+    
+    .accordion-item {
+        border-radius: 10px;
+        box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .2);
+        background-color: #fff;
+        margin-bottom: 20px;
+    }
+    
+    .accordion-header {
+        cursor: pointer;
+        text-align: left;
+        font-size: 22px;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.64;
+        letter-spacing: -.18px;
+        color: #191d3a;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        position: relative;
+    }
+    
+    .accordion-header .icon {
+        font-size: 40px;
+        margin-left: 25px;
+        margin-right: 25px;
+    }
+   .btn{
+    font-family: Work Sans;
+    margin-top:50px;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.71;
+    letter-spacing: -.35px;
+    border-radius: 20px;
+    
+   }

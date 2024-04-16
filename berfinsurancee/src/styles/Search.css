@@ -1,0 +1,275 @@
+.search_in {
+  width: 1513px;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 70px;
+  color: #000000;
+  padding: 0px 0px 0px 70px;
+  font-size: 16px;
+  background-color: #f8f8f8;
+}
+
+.sectionAna {
+  width: 1583px;
+  height: 50px;
+}
+
+.left {
+ width: 310.02px; 
+  
+  height: 30;
+  display: flex;
+  align-items: center;
+}
+
+form {
+  width: 330.02px;
+  height: 30;
+  display: flex;
+  align-items: center;
+}
+
+label {
+  width: 300px;
+  height: 30px;
+  margin-right: 5px;
+  margin-left: 2px;
+}
+
+input[type="text"] {
+  width: 235;
+  height: 30;
+  padding: 5px;
+  border: 0px solid #ccc;
+  border-radius: 4px;
+  background-color: #C5C4CF33;
+}
+
+a {
+  color: #333;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.language {
+  margin-right: 0px;
+}
+
+.search {
+  padding: 0px 17px;
+  background-color: #F0F0F0;
+  color: #41576B;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0px 0px 0px 20px;
+  font-size: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 55.02;
+  height: 30;
+  font-weight: bold;
+  padding-top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px;
+  height: 30px;
+  margin-left: 0px;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  font-family: 'Work Sans', sans-serif;
+
+}
+
+.justify-content-center {
+  display: flex;
+  align-items: center;
+  width: 1155px;
+}
+
+.tel {
+
+  font-size: 20px;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #41576b;
+  margin-right: 46px;
+}
+
+.iletisim {
+  margin-left: 0px;
+}
+
+.header {
+  padding: 21px 70px;
+  width: 1443px;
+  height: 70px;
+}
+
+.headerIn {
+  display: flex;
+  align-items: center;
+  
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.productsMenu {
+  display: flex;
+  align-items: center;
+  padding-left: 6px;
+
+}
+
+.productsMegaMenu {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+    font-weight: 700;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #41576b;
+    margin-right: 37px;
+    justify-content: center;
+
+}
+
+.productsMegaMenu img,
+.productsMegaMenu .textProducts {
+  margin-right: 10px;
+  padding-left: 6px;
+
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.saglikMenu {
+  display: flex;
+  align-items: center;
+}
+
+.saglikMegaMenu {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+    font-weight: 700;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #41576b;
+    margin-right: 37px;
+    justify-content: center;
+  
+}
+
+.saglikMegaMenu img,
+.saglikMegaMenu .textsaglik {
+  margin-right: 10px;
+  padding-left: 6px;
+  width: 111px;
+
+}
+
+.hasarMenu {
+  display: flex;
+  align-items: center;
+}
+
+.hasarMegaMenu {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+    font-weight: 700;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #41576b;
+    margin-right: 37px;
+    justify-content: center;
+}
+
+.hasarMegaMenu img,
+.hasarMegaMenu .texthasar {
+  margin-right: 10px;
+  color: #41576b;
+  padding-left: 10px;
+
+}
+
+.musteriMenu {
+  display: flex;
+  align-items: center;
+}
+
+.musteriMegaMenu {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+    font-weight: 700;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #41576b;
+    margin-right: 37px;
+    justify-content: center;
+}
+
+.musteriMegaMenu img,
+.musteriMegaMenu .textmusteri {
+  margin-right: 10px;
+  padding-left: 10px;
+  width: 107px;
+
+}
+
+.kampanyalarMenu {
+  display: flex;
+  align-items: center;
+  width: 170px;
+}
+
+.kampanyalarMegaMenu {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+    font-weight: 700;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #41576b;
+    margin-right: 37px;
+    justify-content: center;
+}
+
+.kampanyalarMegaMenu img,
+.kampanyalarMegaMenu .textkampanyalar {
+  margin-right: 10px;
+  padding-left: 10px;
+
+}
+
+.iconlar {
+ width: 24px;
+ height: 25px;
+}

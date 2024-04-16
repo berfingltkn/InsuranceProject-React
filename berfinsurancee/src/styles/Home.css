@@ -1,0 +1,147 @@
+*, :after, :before {
+    box-sizing: inherit;
+}
+.imageComponent{
+    width: 1583px;
+    height: 480px;
+    
+}
+.buttonComponent{
+    width: 1583px;
+    height: 168px;
+    background-color: white;
+    margin-bottom: 80px;
+
+}
+.informationComponent{
+    width: 1583px;
+    height: 95.67px;
+    background-color: white;
+    margin-bottom: 94px;
+
+}
+.detailComponent{
+    width: 1583px;
+    height: 636.94px;
+    background-color: white;
+}
+.footerComponent{
+    width: 1583px;
+    height: 100px;
+    background-color: rgb(240, 207, 17);
+}
+.container {
+    width: 1110px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.nxm-row, .policy-card {
+    height: auto;
+    display: flex;
+}
+.nxm-col-12 {
+    width: 100%;
+    height: auto;
+}
+.policy-card {
+    background: #fff;
+    box-shadow: 0 4px 35px rgba(0, 0, 0, .15);
+    border-radius: 0 0 10px 10px;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    flex-direction: column;
+    justify-content: center;
+    height: auto;
+    display: flex;
+}
+.policy-offer-btn {
+    background-color: #eb7c30;
+    border-radius: 28px;
+    text-align: center;
+    margin: 0 auto;
+    padding: 15px 70px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    font-style: normal;
+    text-decoration: none;
+    border: none;
+}
+.policy-text {
+    font-weight: 700;
+    font-size: 14px;
+    text-align: center;
+    color: #394a5d;
+    margin-top: 1rem;
+}
+.policy-previous-offer {
+    font-weight: 500;
+    font-size: 18px;
+    color: #3577e8;
+    text-align: center;
+    text-decoration: underline;
+    margin-top: 1rem;
+}
+.insuranceDescription_In{
+    max-width: 1020px;
+    margin: 0 auto;
+    opacity: .8;
+    font-size: 22px;
+    font-weight: 400;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.45;
+    letter-spacing: -.6px;
+    text-align: center;
+    color: #191d3a;
+    font-family: 'Work Sans', sans-serif;
+}
+.insuranceDescription{
+    max-width: 1020px;
+    margin: 0 auto;
+    opacity: .8;
+    font-size: 22px;
+    font-weight: 400;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.45;
+    letter-spacing: -.6px;
+    text-align: center;
+    color: #191d3a;
+    font-family: 'Work Sans', sans-serif;
+}
+.p{
+    opacity: .8;
+    font-size: 22px;
+    font-weight: 400;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.45;
+    letter-spacing: -.6px;
+    text-align: center;
+    color: #191d3a;
+    font-family: 'Work Sans', sans-serif;
+}
+.ssh{
+    margin-bottom: 80px;
+    width:100%;
+    margin: 0 auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .2);
+    background-color: #fff;
+    margin-bottom: 20px;
+    padding: 32px 47px 32px 42px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 22px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.64;
+    letter-spacing: -.18px;
+    color: #191d3a;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+}
