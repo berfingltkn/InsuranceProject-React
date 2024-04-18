@@ -6,6 +6,7 @@ import { Routes,Route } from 'react-router-dom';
 import Home from './components/Home';
 import Insurance from './components/Insurance';
 
+
 function App() {
   return (
     <div className='app'>
