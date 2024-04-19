@@ -22,7 +22,7 @@ function Stepper() {
       tcNo: state.stepOne.tcNo,
       name: state.stepOne.name,
       surname: state.stepOne.surname,
-      phone_no: state.stepOne.phone_no ,
+      phone_no: state.stepOne.phone_no,
       mail: state.stepOne.mail,
       height: state.stepOne.height,
       weight: state.stepOne.weight,
@@ -39,20 +39,20 @@ function Stepper() {
   const handleCheckbox1Change = (event) => {
     setCheckbox1Checked(event.target.checked);
     console.log(checkbox1Checked);
-    dispatch(setDeclaration(1));
+    dispatch(setDeclaration(true));
   };
 
   const handleCheckbox2Change = (event) => {
     setCheckbox2Checked(event.target.checked);
     console.log(checkbox2Checked);
-    dispatch(setMarketingAuthorization(1));
+    dispatch(setMarketingAuthorization(true));
   };
- 
+
 
   const fetchData = async (value) => {
-    
+
     try {
-     
+
 
       //axios.get yöntemi kullanarak api ye istek gönderdik. istek başarılı şekilde gelirse yanıt response değişkeninde döner
       const response = await axios.get(`https://localhost:7163/api/customers/getcustomerbytcno?tcno=${value}`);
@@ -60,17 +60,17 @@ function Stepper() {
         //yanıt boş değilse, yani sistemde kayıtlı kullanıcı varsa gelen dataların store da ilgili yerlerin yeni değeri olmasını istiyorum
         console.log(response.data);
         dispatch(setName(response.data.data.name));
-        
+
         dispatch(setSurname(response.data.data.surname));
-        
+
         dispatch(setMail(response.data.data.mail));
-        
-       dispatch(setPhoneNo(response.data.data.phone_no));
-        
+
+        dispatch(setPhoneNo(response.data.data.phone_no));
+
         dispatch(setHeight(response.data.data.height));
-        
+
         dispatch(setWeight(response.data.data.weight));
-        
+
       }
       else {
         //yanıt boş ise yani sistemde kullanıcı kayıtlı değilse;
@@ -82,7 +82,40 @@ function Stepper() {
       console.error('Error fetching data', error);
     }
   };
-
+  const addTcNo = async () => {
+    try {
+      const responseTc = await axios.get(`https://localhost:7163/api/customers/getcustomerbytcno?tcno=${tcNo}`);
+      console.log("bakalım ne geliyor", responseTc.data)
+  
+      if (!responseTc.data.success) {
+        console.error('API çağrısı başarısız:', responseTc.data.message);
+        return;
+      }
+  
+      if (!responseTc.data.data) {
+        console.log("boş geliyorr")
+        // debugger;
+        const storeData = {
+          tc_no: tcNo,
+          name: name,
+          surname: surname,
+          mail: mail,
+          phone_no: phone_no,
+          weight: weight,
+          height: height,
+          declaration: declaration,
+          marketing_authorization: marketing_authorization
+        };
+  
+        const response = await axios.post('https://localhost:7163/api/customers/add', storeData);
+        console.log('Yeni kayıt oluşturuldu', response.data);
+      } else {
+        console.log('Kayıt zaten mevcut', responseTc.data);
+      }
+    } catch (error) {
+      console.error('Bir hata oluştu:', error);
+    }
+  }
 
   return (
     <div className="stepper">
@@ -149,7 +182,8 @@ function Stepper() {
                   setFieldValue('step', values.step - 1)
                 }
                 const nextHandle = e => {
-                  setFieldValue('step', values.step + 1)
+                  setFieldValue('step', values.step + 1);
+                  addTcNo();
                 }
 
 
@@ -266,7 +300,7 @@ function Stepper() {
                                   value={name}
                                   label='İsim'
                                   onChange={(e) => {
-                                    
+
                                     dispatch(setName(e.target.value));
 
                                   }}
@@ -309,7 +343,7 @@ function Stepper() {
                               <div className='field-wrapper3'>
                                 <Field as={TextField} name="surname" classname="input"
                                   label='Soyisim'
-                                   value={surname}
+                                  value={surname}
                                   onChange={(e) => {
                                     dispatch(setSurname(e.target.value));
 
@@ -356,7 +390,7 @@ function Stepper() {
                               <div className='field-wrapper' >
 
                                 <Field as={TextField} name="mail" classname="input"
-                                   value={mail}
+                                  value={mail}
                                   onChange={(e) => {
                                     dispatch(setMail(e.target.value));
 
@@ -400,7 +434,7 @@ function Stepper() {
                               <div className='field-wrapper' >
 
                                 <Field as={TextField} name="phone_no" classname="input"
-                                 value={phone_no}
+                                  value={phone_no}
                                   onChange={(e) => {
                                     dispatch(setPhoneNo(e.target.value));
 
@@ -453,7 +487,7 @@ function Stepper() {
                               <div className='field-wrapper' >
 
                                 <Field as={TextField} name="height" classname="input"
-                                 value={height}
+                                  value={height}
                                   onChange={(e) => {
                                     dispatch(setHeight(e.target.value));
 
@@ -506,7 +540,7 @@ function Stepper() {
                               <div className='field-wrapper' >
 
                                 <Field as={TextField} name="weight" classname="input"
-                                   value={weight}
+                                  value={weight}
                                   onChange={(e) => {
                                     dispatch(setWeight(e.target.value));
 
