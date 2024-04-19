@@ -7,13 +7,14 @@ import InputLabel from '@mui/material/InputLabel';
 import { Height, RunCircle } from '@mui/icons-material';
 import { useState } from 'react';
 import { useSelector, useDispatch, Provider } from 'react-redux';
-import { setTcNo, setName, setSurname, setMail, setPhoneNo, setDeclaration, setKilo, setMarketingAuthorization, setSize } from '../store/slice/stepOneSlice.js'
+import { setTcNo, setName, setSurname, setMail, setPhoneNo, setDeclaration, setWeight, setMarketingAuthorization, setHeight } from '../store/slice/stepOneSlice.js'
 import { useFormikContext } from 'formik';
 import { validationStepper } from '../schemas/stepper-validation.js'
+import axios from 'axios';
 
 function Stepper() {
   const dispatch = useDispatch()
-  const { tcNo, name, surname, phoneNo, mail, size, kilo,declaration,marketing_authorization } = useSelector((state) => {
+  const { tcNo, name, surname, phone_no, mail, height, weight, declaration, marketing_authorization } = useSelector((state) => {
     //useSelector hook'u, store daki state i okumak için kullanılır 
     //mevcut stati parametre olarak alıyor
     return {
@@ -21,16 +22,16 @@ function Stepper() {
       tcNo: state.stepOne.tcNo,
       name: state.stepOne.name,
       surname: state.stepOne.surname,
-      phoneNo: state.stepOne.phoneNo,
+      phone_no: state.stepOne.phone_no ,
       mail: state.stepOne.mail,
-      size: state.stepOne.size,
-      kilo: state.stepOne.kilo,
-       declaration: state.stepOne.declaration,
-       marketing_authorization: state.stepOne.marketing_authorization
+      height: state.stepOne.height,
+      weight: state.stepOne.weight,
+      declaration: state.stepOne.declaration,
+      marketing_authorization: state.stepOne.marketing_authorization
 
     };
   });
-  console.log(tcNo, name, surname, phoneNo, mail, size, kilo,declaration,marketing_authorization);
+  console.log(tcNo, name, surname, phone_no, mail, height, weight, declaration, marketing_authorization);
 
   const [checkbox1Checked, setCheckbox1Checked] = useState(false);
   const [checkbox2Checked, setCheckbox2Checked] = useState(false);
@@ -46,30 +47,47 @@ function Stepper() {
     console.log(checkbox2Checked);
     dispatch(setMarketingAuthorization(1));
   };
-const handleStoreInfo=(event)=>{
-  console.log(tcNo, name, surname, phoneNo, mail, size, kilo,declaration,marketing_authorization);
+ 
 
-}
+  const fetchData = async (value) => {
+    
+    try {
+     
 
-  //javascript blur event'i
-  function handleTcNoBlur(e) {
+      //axios.get yöntemi kullanarak api ye istek gönderdik. istek başarılı şekilde gelirse yanıt response değişkeninde döner
+      const response = await axios.get(`https://localhost:7163/api/customers/getcustomerbytcno?tcno=${value}`);
+      if (response.data) {
+        //yanıt boş değilse, yani sistemde kayıtlı kullanıcı varsa gelen dataların store da ilgili yerlerin yeni değeri olmasını istiyorum
+        console.log(response.data);
+        dispatch(setName(response.data.data.name));
+        
+        dispatch(setSurname(response.data.data.surname));
+        
+        dispatch(setMail(response.data.data.mail));
+        
+       dispatch(setPhoneNo(response.data.data.phone_no));
+        
+        dispatch(setHeight(response.data.data.height));
+        
+        dispatch(setWeight(response.data.data.weight));
+        
+      }
+      else {
+        //yanıt boş ise yani sistemde kullanıcı kayıtlı değilse;
+        console.error('Kullanıcı sistemde kayıtlı değil, table a eklenecektir.')
+      }
 
-    dispatch(setTcNo(e.target.value));
-
-    // dispatch(setTcNo(e.target.value));
-    //burada eğer getcustomerbytcno veri geliyorsa store a bu bilgileri atsın.
-  }
-
+    }
+    catch (error) {
+      console.error('Error fetching data', error);
+    }
+  };
 
 
   return (
-
     <div className="stepper">
-
       <div class="complementary_general-info__main">
-
         <div>
-
           <div >
             <Formik
               validationSchema={validationStepper}
@@ -81,10 +99,10 @@ const handleStoreInfo=(event)=>{
                 tcNo: '',
                 name: '',
                 surname: '',
-                phoneNo: '',
+                phone_no: '',
                 mail: '',
-                size: '',
-                kilo: '',
+                height: '',
+                weight: '',
                 declaration: '',//beyan
                 marketing_authorization: '',//pazarlama izni
 
@@ -194,8 +212,10 @@ const handleStoreInfo=(event)=>{
                                   id="tcNo"
                                   //value={tcNo}
                                   onBlur={(e) => {
-                                    dispatch(setTcNo(e.target.value));
-                                    
+                                    const value = e.target.value;
+                                    dispatch(setTcNo(value));
+                                    fetchData(value);
+
                                   }}
                                   onKeyDown={(e) => {
                                     if (e.key !== 'Backspace' && e.key !== 'Delete' && e.target.value.length >= 11) {
@@ -243,11 +263,12 @@ const handleStoreInfo=(event)=>{
                             <Grid item xs={6} sm={6} md={3} style={{ paddingTop: '15px' }} className='css-18tn63a'>
                               <div className='field-wrapper2'>
                                 <Field as={TextField} name="name" classname="input"
-                                  // value={name}
+                                  value={name}
                                   label='İsim'
-                                  onBlur={(e) => {
-                                    dispatch(setName(e.target.value));
+                                  onChange={(e) => {
                                     
+                                    dispatch(setName(e.target.value));
+
                                   }}
                                   InputLabelProps={{
                                     shrink: true,
@@ -288,10 +309,10 @@ const handleStoreInfo=(event)=>{
                               <div className='field-wrapper3'>
                                 <Field as={TextField} name="surname" classname="input"
                                   label='Soyisim'
-                                  // value={surname}
-                                  onBlur={(e) => {
+                                   value={surname}
+                                  onChange={(e) => {
                                     dispatch(setSurname(e.target.value));
-                                    
+
                                   }}
                                   InputLabelProps={{
                                     shrink: true,
@@ -335,10 +356,10 @@ const handleStoreInfo=(event)=>{
                               <div className='field-wrapper' >
 
                                 <Field as={TextField} name="mail" classname="input"
-                                  // value={mail}
-                                  onBlur={(e) => {
+                                   value={mail}
+                                  onChange={(e) => {
                                     dispatch(setMail(e.target.value));
-                                    
+
                                   }}
                                   label='E-Posta Adresi'
                                   InputProps={{
@@ -378,11 +399,11 @@ const handleStoreInfo=(event)=>{
                             <Grid item xs={12} md={6} style={{ paddingTop: '15px' }}>
                               <div className='field-wrapper' >
 
-                                <Field as={TextField} name="phoneNo" classname="input"
-                                  // value={phoneNo}
-                                  onBlur={(e) => {
+                                <Field as={TextField} name="phone_no" classname="input"
+                                 value={phone_no}
+                                  onChange={(e) => {
                                     dispatch(setPhoneNo(e.target.value));
-                                    
+
                                   }}
                                   inputMode="numeric"
                                   onKeyDown={(e) => {
@@ -425,17 +446,17 @@ const handleStoreInfo=(event)=>{
 
                                     },
                                   }} ></Field>
-                                <ErrorMessage name="phoneNo" className='error-message' component="text" />
+                                <ErrorMessage name="phone_no" className='error-message' component="text" />
                               </div>
                             </Grid>
                             <Grid item xs={12} md={6} style={{ paddingTop: '15px' }}>
                               <div className='field-wrapper' >
 
-                                <Field as={TextField} name="size" classname="input"
-                                  // value={size}
-                                  onBlur={(e) => {
-                                    dispatch(setSize(e.target.value));
-                                    
+                                <Field as={TextField} name="height" classname="input"
+                                 value={height}
+                                  onChange={(e) => {
+                                    dispatch(setHeight(e.target.value));
+
                                   }}
                                   inputMode="numeric"
                                   onKeyDown={(e) => {
@@ -478,17 +499,17 @@ const handleStoreInfo=(event)=>{
 
                                     },
                                   }} ></Field>
-                                <ErrorMessage name="size" className='error-message' component="text" />
+                                <ErrorMessage name="height" className='error-message' component="text" />
                               </div>
                             </Grid>
                             <Grid item xs={12} md={6} style={{ paddingTop: '15px' }}>
                               <div className='field-wrapper' >
 
-                                <Field as={TextField} name="kilo" classname="input"
-                                  // value={kilo}
-                                  onBlur={(e) => {
-                                    dispatch(setKilo(e.target.value));
-                                    
+                                <Field as={TextField} name="weight" classname="input"
+                                   value={weight}
+                                  onChange={(e) => {
+                                    dispatch(setWeight(e.target.value));
+
                                   }}
                                   inputMode="numeric"
                                   onKeyDown={(e) => {
@@ -531,7 +552,7 @@ const handleStoreInfo=(event)=>{
 
                                     },
                                   }} ></Field>
-                                <ErrorMessage name="kilo" className='error-message' component="text" />
+                                <ErrorMessage name="weight" className='error-message' component="text" />
                               </div>
                             </Grid>
 
@@ -631,9 +652,9 @@ const handleStoreInfo=(event)=>{
 
 
                         {values.step == 2 && (
-                          < div onClick={handleStoreInfo}>
-                          
-                          </div>
+                          < >
+
+                          </>
                         )}
 
 
@@ -691,23 +712,9 @@ const handleStoreInfo=(event)=>{
 
             </Formik>
           </div>
-
-
-
-
-
         </div>
-
       </div>
-
-
-
-
-
     </div >
-
   )
-
 }
-
 export default Stepper

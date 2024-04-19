@@ -7,10 +7,10 @@ const stepOneSlice = createSlice({
         tcNo: '',
         name: '',
         surname: '',
-        phoneNo: '',
+        phone_no: '',
         mail: '',
-        size: '',
-        kilo: '',
+        height: '',
+        weight: '',
         declaration: '',//beyan
         marketing_authorization: ''
     },
@@ -30,19 +30,19 @@ const stepOneSlice = createSlice({
         },
         setPhoneNo: (state, action) => {
             
-            state.phoneNo = action.payload;
+            state.phone_no = action.payload;
         },
         setMail: (state, action) => {
             
             state.mail = action.payload;
         },
-        setSize: (state, action) => {
+        setHeight: (state, action) => {
             
-            state.size = action.payload;
+            state.height = action.payload;
         },
-        setKilo: (state, action) => {
+        setWeight: (state, action) => {
             
-            state.kilo = action.payload;
+            state.weight = action.payload;
         },
         setDeclaration: (state, action) => {
             
@@ -56,5 +56,5 @@ const stepOneSlice = createSlice({
     }
 });
 
-export const {setTcNo,setName,setSurname,setPhoneNo,setMail,setSize,setKilo,setDeclaration,setMarketingAuthorization}=stepOneSlice.actions;
+export const {setTcNo,setName,setSurname,setPhoneNo,setMail,setHeight,setWeight,setDeclaration,setMarketingAuthorization}=stepOneSlice.actions;
 export const stepOneReducer = stepOneSlice.reducer;
