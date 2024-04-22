@@ -11,6 +11,10 @@ import { setTcNo, setName, setSurname, setMail, setPhoneNo, setDeclaration, setW
 import { useFormikContext } from 'formik';
 import { validationStepper } from '../schemas/stepper-validation.js'
 import axios from 'axios';
+import { Stepper2 } from './Stepper2.js';
+import { Stepper3 } from './Stepper3.js';
+import { Stepper4 } from './Stepper4.js';
+
 
 function Stepper() {
   const dispatch = useDispatch()
@@ -86,12 +90,12 @@ function Stepper() {
     try {
       const responseTc = await axios.get(`https://localhost:7163/api/customers/getcustomerbytcno?tcno=${tcNo}`);
       console.log("bakalım ne geliyor", responseTc.data)
-  
+
       if (!responseTc.data.success) {
         console.error('API çağrısı başarısız:', responseTc.data.message);
         return;
       }
-  
+
       if (!responseTc.data.data) {
         console.log("boş geliyorr")
         // debugger;
@@ -106,7 +110,7 @@ function Stepper() {
           declaration: declaration,
           marketing_authorization: marketing_authorization
         };
-  
+
         const response = await axios.post('https://localhost:7163/api/customers/add', storeData);
         console.log('Yeni kayıt oluşturuldu', response.data);
       } else {
@@ -232,11 +236,10 @@ function Stepper() {
                     </div>
 
 
-                    <div class='form-content-area'>
-                      <Form >
-                        {values.step == 1 && (
 
-
+                    <Form >
+                      {values.step == 1 && (
+                        <div class='form-content-area'>
                           <Grid container spacing={0} className='css-1tz8m30'>
                             <Grid item xs={12} md={6} style={{ paddingTop: '15px' }}>
                               <div className='field-wrapper' >
@@ -678,33 +681,39 @@ function Stepper() {
 
 
                           </Grid>
+                        </div>
+                      )}
+                    </Form>
 
 
 
-                        )}
+                    {values.step == 2 && (
+
+                      <Stepper2 />
+
+                    )}
 
 
 
-                        {values.step == 2 && (
-                          < >
 
-                          </>
-                        )}
-
-
-                        {values.step == 3 && (
-                          <>
-                          </>
-                        )}
-
-                        {values.step == 4 && (
-                          <>
-                          </>
-                        )}
+                    {values.step == 3 && (
+                      <>
+                        <Stepper3 />
+                      </>
+                    )}
 
 
-                      </Form>
-                    </div>
+
+
+                    {values.step == 4 && (
+                      <>
+                        <Stepper4 />
+                      </>
+                    )}
+
+
+
+
 
                     <div className='insurancebutton__container'>
                       {values.step > 1 && (
