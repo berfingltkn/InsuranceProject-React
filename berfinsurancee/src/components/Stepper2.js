@@ -5,13 +5,16 @@ import { useSelector, useDispatch } from 'react-redux';
 
 
 export function Stepper2() {
-    const [cities,setCities]=useState([]);
-    
+    const [cities, setCities] = useState([]);
+    const [districts, setDistrict] = useState([]);//city e göre gelen tüm ilçeler
+    const [hospitals, setHospitals] = useState([]);
+    const [selectedCity, setSelectedCity] = useState('');//seçilen il
+    const [selectedDistrict, setSelectedDistrict] = useState('');//seçilen ilçe
     const fetchCity = async () => {
         try {
-            const response = await axios.get('https://localhost:7224/api/cities/getall');
+            const response = await axios.get('https://localhost:7021/api/cities/getall');
             setCities(response.data.data);
-            console.log(response.data.data)
+
 
 
         }
@@ -19,9 +22,50 @@ export function Stepper2() {
             console.error('Error fetching cities', error);
         }
     }
-    useEffect(()=>{
+    const fetchDistrict = async (cityName) => {
+        try {
+            const response = await axios.get(`https://localhost:7021/api/hospitals/getdistrictbycityid?cityName=${cityName}`);
+            const uniqueDistricts = [...new Set(response.data.data.map(district => district.districtName))]; // Tekrarlanan ilçeleri önlemek için set kullanılıyor
+            const sortedDistricts = uniqueDistricts.sort((a, b) => a.localeCompare(b)); // Ilçeleri alfabetik olarak sıralama
+            setDistrict(sortedDistricts);
+            console.log("sortedDistricts: ", sortedDistricts);
+        } catch (error) {
+            console.error('Error fetching districts', error);
+        }
+    }
+
+    const handleCityChange = (event) => {
+        //city select de seçilen değeri alıyoruz.
+        setHospitals([]);
+
+        const selectedValue = event.target.value;
+        setSelectedCity(selectedValue);
+
+
+        // Seçilen cityId'yi kullanarak sorguyu gerçekleştir
+        fetchDistrict(selectedValue);
+    };
+
+    const handleDistrictChange = async (event, cityName, districtName) => {
+        //city select de seçilen değeri alıyoruz.
+        const selectedValue = event.target.value;
+        setSelectedDistrict(selectedValue);
+        console.log(selectedValue);
+
+        try {
+            const response = await axios.get(`https://localhost:7021/api/hospitals/GetHospitalsByCityAndDistrict?cityName=${selectedCity}&districtName=${selectedValue}`);
+            setHospitals(response.data.data);
+
+        } catch (error) {
+            console.error('Error fetching hospitals', error);
+        }
+    };
+
+    useEffect(() => {
         fetchCity();
-    })
+
+    }, [])
+
 
     return (
         <div classname="steppertwo"
@@ -90,11 +134,18 @@ export function Stepper2() {
                                     height: "17px"
 
                                 }}
-                            >İL</label>
-                            <select classname="form-control" id="selectItems1" style={{ color: "rgb(0 0 0 / 73%)", fontFamily: "NunitoSans", fontSize: "16px", width: "177px", height: "41.70px", border: "none", outline: "none" }} >
-                                {cities.map(city=>(
+                            >
+                                İL
+                            </label>
+                            <select classname="form-control" id="selectItems1" style={{ color: "rgb(0 0 0 / 73%)", fontFamily: "NunitoSans", fontSize: "16px", width: "177px", height: "41.70px", border: "none", outline: "none" }}
+                                onChange={handleCityChange}
+                                value={selectedCity}
+                            >
+                                <option value="">   </option> {/* Boş seçenek */}
+                                {cities.map(city => (
                                     <option key={city.cityId} >{city.cityName}</option>
                                 ))}
+
                             </select>
 
                         </div>
@@ -129,38 +180,49 @@ export function Stepper2() {
 
                                     }}
                                 >İLÇE</label>
-                                <select classname="form-control" id="selectItems1" style={{ color: "rgb(0 0 0 / 73%)", fontFamily: "NunitoSans", fontSize: "16px", width: "177px", height: "41.70px", border: "none", outline: "none" }} >
-                                    <option>1</option>
-                                    <option>2</option>
+                                <select classname="form-control" id="selectItems1" style={{ color: "rgb(0 0 0 / 73%)", fontFamily: "NunitoSans", fontSize: "16px", width: "177px", height: "41.70px", border: "none", outline: "none" }}
+                                    onChange={handleDistrictChange}
+                                    value={selectedDistrict}>
+                                    <option value="">   </option> {/* Boş seçenek */}
+                                    {districts.map((district, index) => (
+                                        <option key={index}>{district}</option>
+                                    ))}
                                 </select>
 
                             </div>
                         </div>
                     </div>
-                    <div className="filterInput" style={{ width: "397.83px", height: "41.59px", display: "flex", border: "1.9px solid rgb(204 204 204 / 71%", borderRadius: "30px" }}
+                    <div>
+                        <div className="filterInput" style={{ width: "397.83px", height: "41.59px", display: "flex", border: "1.9px solid rgb(204 204 204 / 71%", borderRadius: "30px" }}
 
-                    >
-                        <div className="leftDiv" style={{ width: "%80", height: "41px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                            <input type="text" aria-autocomplete="list" placeholder="Hastane ara"
-                                style={{
-                                    marginLeft: "1em",
-                                    width: "300px",
-                                    height: "32.59px",
-                                    outline: "none",
-                                    border: "none",
-                                }}
-                            ></input>
-                        </div>
-                        <div className="rightDiv" style={{ width: "%20", height: "41px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                            <IoMdSearch style={{
-                                color: "rgb(0 0 0 / 54%)",
-                                fontSize: "1.3rem",
+                        >
+                            <div className="leftDiv" style={{ width: "%80", height: "41px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                <input type="text" aria-autocomplete="list" placeholder="Hastane ara"
+                                    style={{
+                                        marginLeft: "1em",
+                                        width: "300px",
+                                        height: "32.59px",
+                                        outline: "none",
+                                        border: "none",
+                                    }}
+                                ></input>
+                            </div>
+                            <div className="rightDiv" style={{ width: "%20", height: "41px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                <IoMdSearch style={{
+                                    color: "rgb(0 0 0 / 54%)",
+                                    fontSize: "1.3rem",
 
-                            }} />
+                                }} />
+                            </div>
                         </div>
+                        {/* {hospitals.map((hospital, index) => (
+                            <div className='filterDropdown' style={{background:"white", width: "395.83px", height: "35.59px", display: "flex", border: "0.3px solid rgb(204 204 204 / 71%", borderRadius: "8px", boxShadow: "0 0 5px 4px rgba(190, 194, 219, .18)", }}>
+                                <p style={{background:"white"}}>{hospitals.hospitalName}</p>
+                            </div>
+                        ))} */}
+
                     </div>
                 </div>
-
                 <div className="filterList"
                     style={{
                         width: "809.97px",
@@ -174,130 +236,42 @@ export function Stepper2() {
 
                     }}>
                     {/* hastaneler listelensin */}
-                    <div classname="hospitalCart"
-                        style={{
-                            alignItems: "center",
-                            borderBottom: "8px solid #79cc81",
-                            borderRadius: "14px",
-                            boxShadow: "0 0 5px 4px rgba(190,194,219,.16)",
-                            color: "#001248",
-                            display: "flex",
-                            fontSize: "18px",
-                            fontWeight: "400",
-                            height: "129px",
-                            width: "185.81px",
-                            justifyContent: "center",
-                            lineHeight: "27px",
-                            textAlign: "center",
+                    {hospitals.map((hospital, index) => (
+                        <div classname="hospitalCart"
+                            style={{
+                                alignItems: "center",
+                                borderBottom: "8px solid #79cc81",
+                                borderRadius: "14px",
+                                boxShadow: "0 0 5px 4px rgba(190,194,219,.16)",
+                                color: "#001248",
+                                display: "flex",
+                                fontSize: "18px",
+                                fontWeight: "400",
+                                height: "129px",
+                                width: "185.81px",
+                                justifyContent: "center",
+                                lineHeight: "27px",
+                                textAlign: "center",
 
 
-                        }}
-                    >
-                        <p style={{
-                            color: "#001248",
-                            boxSizing: "inherit",
-                            fontSize: "18px",
-                            fontWeight: "400",
-                            textAlign: "center",
-                            lineHeight: "27px",
+                            }}
+                        >
+                            <p style={{
+                                color: "#001248",
+                                boxSizing: "inherit",
+                                fontSize: "18px",
+                                fontWeight: "400",
+                                textAlign: "center",
+                                lineHeight: "27px",
 
-                        }}>
-                            deneme deneme deneme
-                        </p>
-                    </div>
-                    <div classname="hospitalCart"
-                        style={{
-                            alignItems: "center",
-                            borderBottom: "8px solid #79cc81",
-                            borderRadius: "14px",
-                            boxShadow: "0 0 5px 4px rgba(190,194,219,.16)",
-                            color: "#001248",
-                            display: "flex",
-                            fontSize: "18px",
-                            fontWeight: "400",
-                            height: "129px",
-                            width: "185.81px",
-                            justifyContent: "center",
-                            lineHeight: "27px",
-                            textAlign: "center",
+                            }}>
+                                {hospital.hospitalName}
+                            </p>
+                        </div>
+                    ))}
 
 
-                        }}
-                    >
-                        <p style={{
-                            color: "#001248",
-                            boxSizing: "inherit",
-                            fontSize: "18px",
-                            fontWeight: "400",
-                            textAlign: "center",
-                            lineHeight: "27px",
 
-                        }}>
-                            deneme deneme deneme
-                        </p>
-                    </div>
-                    <div classname="hospitalCart"
-                        style={{
-                            alignItems: "center",
-                            borderBottom: "8px solid #79cc81",
-                            borderRadius: "14px",
-                            boxShadow: "0 0 5px 4px rgba(190,194,219,.16)",
-                            color: "#001248",
-                            display: "flex",
-                            fontSize: "18px",
-                            fontWeight: "400",
-                            height: "129px",
-                            width: "185.81px",
-                            justifyContent: "center",
-                            lineHeight: "27px",
-                            textAlign: "center",
-
-
-                        }}
-                    >
-                        <p style={{
-                            color: "#001248",
-                            boxSizing: "inherit",
-                            fontSize: "18px",
-                            fontWeight: "400",
-                            textAlign: "center",
-                            lineHeight: "27px",
-
-                        }}>
-                            hospital name
-                        </p>
-                    </div>
-                    <div classname="hospitalCart"
-                        style={{
-                            alignItems: "center",
-                            borderBottom: "8px solid #79cc81",
-                            borderRadius: "14px",
-                            boxShadow: "0 0 5px 4px rgba(190,194,219,.16)",
-                            color: "#001248",
-                            display: "flex",
-                            fontSize: "18px",
-                            fontWeight: "400",
-                            height: "129px",
-                            width: "185.81px",
-                            justifyContent: "center",
-                            lineHeight: "27px",
-                            textAlign: "center",
-
-
-                        }}
-                    >
-                        <p style={{
-                            color: "#001248",
-                            boxSizing: "inherit",
-                            fontSize: "18px",
-                            fontWeight: "400",
-                            textAlign: "center",
-                            lineHeight: "27px",
-
-                        }}>
-                            hospital name
-                        </p>
-                    </div>
                 </div>
             </div>
 

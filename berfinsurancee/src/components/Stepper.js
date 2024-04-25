@@ -59,7 +59,7 @@ function Stepper() {
 
 
       //axios.get yöntemi kullanarak api ye istek gönderdik. istek başarılı şekilde gelirse yanıt response değişkeninde döner
-      const response = await axios.get(`https://localhost:7163/api/customers/getcustomerbytcno?tcno=${value}`);
+      const response = await axios.get(`https://localhost:7021/api/customers/getcustomerbytcno?tcno=${value}`);
       if (response.data) {
         //yanıt boş değilse, yani sistemde kayıtlı kullanıcı varsa gelen dataların store da ilgili yerlerin yeni değeri olmasını istiyorum
         console.log(response.data);
@@ -88,7 +88,7 @@ function Stepper() {
   };
   const addTcNo = async () => {
     try {
-      const responseTc = await axios.get(`https://localhost:7163/api/customers/getcustomerbytcno?tcno=${tcNo}`);
+      const responseTc = await axios.get(`https://localhost:7021/api/customers/getcustomerbytcno?tcno=${tcNo}`);
       console.log("bakalım ne geliyor", responseTc.data)
 
       if (!responseTc.data.success) {
@@ -111,7 +111,7 @@ function Stepper() {
           marketing_authorization: marketing_authorization
         };
 
-        const response = await axios.post('https://localhost:7163/api/customers/add', storeData);
+        const response = await axios.post('https://localhost:7021/api/customers/add', storeData);
         console.log('Yeni kayıt oluşturuldu', response.data);
       } else {
         console.log('Kayıt zaten mevcut', responseTc.data);
@@ -130,7 +130,7 @@ function Stepper() {
               validationSchema={validationStepper}
               initialValues={{
                 step: 1,
-                lastStep: 4,
+                lastStep: 6,
                 isAccepted: false,//checkbox ın check edilip edilmediğini kontrol ediyoruz
                 //step1
                 tcNo: '',
@@ -199,31 +199,31 @@ function Stepper() {
                       <div className='insuranceprogress__container'>
 
                         <div className='insuranceprogress__circle_info_node'>
-                          <div className={`insuranceprogress__circle${values.step === 1 || values.step === 2 || values.step === 3 || values.step === 4 ? ' active' : ''}`}></div>
+                          <div className={`insuranceprogress__circle${values.step === 1 || values.step === 2 || values.step === 3 || values.step === 4|| values.step === 5|| values.step === 6 ? ' active' : ''}`}></div>
                           <div className='insuranceprogress__info'>
                             <p>Genel Bilgiler</p>
                           </div>
                         </div>
-                        <div className={`insuranceprogress__line${values.step === 2 || values.step === 3 || values.step === 4 ? ' active' : ''}`}></div>
+                        <div className={`insuranceprogress__line${values.step === 2 || values.step === 3 || values.step === 4|| values.step === 5|| values.step === 6 ? ' active' : ''}`}></div>
 
                         <div className='insuranceprogress__circle_info_node'>
-                          <div className={`insuranceprogress__circle${values.step === 2 || values.step === 3 || values.step === 4 ? ' active' : ''}`}></div>
+                          <div className={`insuranceprogress__circle${values.step === 2 || values.step === 3 || values.step === 4|| values.step === 5|| values.step === 6 ? ' active' : ''}`}></div>
                           <div className='insuranceprogress__info'>
                             <p>Anlaşmalı Kurumlar</p>
                           </div>
                         </div>
-                        <div className={`insuranceprogress__line${values.step === 3 || values.step === 4 ? ' active' : ''}`}></div>
+                        <div className={`insuranceprogress__line${values.step === 3 || values.step === 4 || values.step === 5|| values.step === 6 ? ' active' : ''}`}></div>
 
                         <div className='insuranceprogress__circle_info_node'>
-                          <div className={`insuranceprogress__circle${values.step === 3 || values.step === 4 ? ' active' : ''}`}></div>
+                          <div className={`insuranceprogress__circle${values.step === 3 || values.step === 4|| values.step === 5|| values.step === 6 ? ' active' : ''}`}></div>
                           <div className='insuranceprogress__info'>
                             <p>Teminat Bilgileri</p>
                           </div>
                         </div>
-                        <div className={`insuranceprogress__line${values.step === 4 ? ' active' : ''}`}></div>
+                        <div className={`insuranceprogress__line${ values.step === 6 ? ' active' : ''}`}></div>
 
                         <div className='insuranceprogress__circle_info_node'>
-                          <div className={`insuranceprogress__circle${values.step === 4 ? ' active' : ''}`}></div>
+                          <div className={`insuranceprogress__circle${values.step === 6  ? ' active' : ''}`}></div>
                           <div className='insuranceprogress__info'>
                             <p>Ödeme Bilgileri</p>
                           </div>
@@ -707,11 +707,20 @@ function Stepper() {
 
                     {values.step == 4 && (
                       <>
-                        <Stepper4 />
+                        {/* stepper teminat */}
                       </>
                     )}
 
-
+                    {values.step == 5 && (
+                      <>
+                       {/* stepper teminat */}
+                      </>
+                    )}
+                    {values.step == 6 && (
+                      <>
+                        {/* stepper ödeme */}
+                      </>
+                    )}
 
 
 
