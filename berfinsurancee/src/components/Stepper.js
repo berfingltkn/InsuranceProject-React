@@ -14,6 +14,8 @@ import axios from 'axios';
 import { Stepper2 } from './Stepper2.js';
 import { Stepper3 } from './Stepper3.js';
 import { Stepper4 } from './Stepper4.js';
+import { Stepper5 } from './Stepper5.js';
+import { Stepper6 } from './Stepper6.js';
 
 
 function Stepper() {
@@ -707,18 +709,18 @@ function Stepper() {
 
                     {values.step == 4 && (
                       <>
-                        {/* stepper teminat */}
+                       <Stepper4 />
                       </>
                     )}
 
                     {values.step == 5 && (
                       <>
-                       {/* stepper teminat */}
+                       <Stepper5 />
                       </>
                     )}
                     {values.step == 6 && (
                       <>
-                        {/* stepper ödeme */}
+                        <Stepper6 />
                       </>
                     )}
 

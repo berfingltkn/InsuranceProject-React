@@ -14,7 +14,7 @@ export function Stepper3() {
             <div className="main"
                 style={{
                     width: "950.47px",
-                    height: "174.19px",
+                    // height: "174.19px",
 
                     backgroundColor: "rgba(248,252,254,0.9)",
                     border: "2px solid #e2edfd",
@@ -37,7 +37,7 @@ export function Stepper3() {
                 >
                     <IoInformationCircleSharp style={{ width: "20px", height: "20px" }} />
                     <h2 style={{
-                        fontSize: "1.6rem",
+                        fontSize: "1rem",
                         marginLeft: "1em",
 
                         fontWeight: "600",

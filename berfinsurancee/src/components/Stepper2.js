@@ -201,7 +201,7 @@ export function Stepper2() {
                                     style={{
                                         marginLeft: "1em",
                                         width: "300px",
-                                        height: "32.59px",
+                                        
                                         outline: "none",
                                         border: "none",
                                     }}
