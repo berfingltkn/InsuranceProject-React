@@ -1,0 +1,31 @@
+.checkboxBaby {
+    border: 2px solid #e2edfd;
+    border-radius: 20px;
+    height: 100%;
+    margin-top: 20px;
+    padding: 1em 1em 2em;
+
+}
+
+.kapsayiciDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 80%;
+    box-sizing: inherit;
+}
+
+.legendText {
+    color: #018fec;
+    font-weight: 600;
+    margin-inline: 1em;
+    box-sizing: border-box;
+    font-size: 1rem;
+    display: block;
+    margin-top: -10px;
+    background-color: white;
+    max-width: 100%;
+    width: 96px;
+    margin-top: -30px;
+    white-space: normal
+}

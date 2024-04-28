@@ -18,7 +18,7 @@
 .tableHeader {
     grid-template-columns: repeat(3, 1fr);
     margin-left: 10%;
-    width: 80%;
+    width: 1055px;
     display: grid;
     /* margin-top: 1em; */
     margin-top: -20em;
@@ -30,16 +30,16 @@
 .tableAmount {
     grid-template-columns: repeat(3, 1fr);
 
-    width: 83.4%;
+    width: 1047px;
 
-
-    height: 37px;
+    margin-right: 23px;
+    height: 30px;
     background-color: rgba(0, 34, 255, .03);
     border-bottom-left-radius: .75em;
     border-left: 1px solid #d1d1d1;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-   
+    grid-template-columns: repeat(3, 1fr);
+
 }
 
 .yatisli {
@@ -74,6 +74,48 @@
     font-weight: 500;
 }
 
+.yatisli.active {
+    border-left: 2px solid #018fec;
+    display: grid;
+
+    border-right: 2px solid #018fec;
+    box-sizing: inherit;
+
+    background-color: rgba(0, 34, 255, .03);
+
+    border-top: 1px solid #018fec;
+    border-top-left-radius: .75em;
+    border-top-right-radius: .75em;
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+}
+
+.yatisliyatissiz.active {
+    border-left: 2px solid #018fec;
+    display: grid;
+
+    border-right: 2px solid #018fec;
+    box-sizing: inherit;
+
+    background-color: rgba(0, 34, 255, .03);
+
+    border-top: 1px solid #018fec;
+    border-top-left-radius: .75em;
+    border-top-right-radius: .75em;
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+}
+
 .emptyDiv {
 
     width: 100%;
@@ -92,30 +134,52 @@
     display: grid;
     overflow-y: scroll;
     height: 355px;
-    width: 1055px;
+    width: 1067px;
 }
 
 .body__header {
     background-color: rgba(121, 126, 159, .03);
     display: grid;
-    
+
 
 }
 
 .body__yatisli {
     border-left: 1px solid #d1d1d1;
     display: grid;
-    width: 330px;
 
+    border-right: 1px solid #d1d1d1;
     box-sizing: inherit;
 
 }
+
 
 .body__yatissiz {
     border-left: 1px solid #d1d1d1;
     display: grid;
 
-    width: 330px;
+    border-right: 1px solid #d1d1d1;
+
+}
+
+.body__yatisli.active {
+    border-left: 2px solid #018fec;
+    ;
+    display: grid;
+
+    border-right: 2px solid #018fec;
+    ;
+    box-sizing: inherit;
+
+}
+
+.body__yatissiz.active {
+    border-left: 2px solid #018fec;
+    ;
+    display: grid;
+
+    border-right: 2px solid #018fec;
+    ;
 
 }
 
@@ -139,7 +203,7 @@
     justify-content: flex-start;
     padding-left: 15px;
     align-items: center;
-
+    border-bottom: 1px solid #d1d1d1;
 
 }
 
@@ -150,18 +214,20 @@
     justify-content: center;
     padding-left: 15px;
     align-items: center;
-
+    border-bottom: 1px solid #d1d1d1;
 
 }
 
 .tutarDiv {
     width: 345px;
-    margin-left: 15px;
+    margin-left: 7px;
     font-weight: 500;
     font-size: 14px;
     color: #1a7dbd;
     display: grid;
     align-items: center;
+    border-right: 1px solid #d1d1d1;
+    border-bottom: 1px solid #d1d1d1;
 }
 
 .yatisliTutar {
@@ -172,6 +238,21 @@
     font-weight: 500;
     font-size: 14px;
     color: #1a7dbd;
+    border-left: 1px solid #d1d1d1;
+    border-right: 1px solid #d1d1d1;
+    border-bottom: 1px solid #d1d1d1;
+}
+.yatisliTutar.active {
+    width: 345px;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    font-size: 14px;
+    color: #1a7dbd;
+    border-left: 2px solid #018fec;
+    border-right:2px solid #018fec;
+    border-bottom: 2px solid #018fec;
 }
 
 .yatissizTutar {
@@ -182,7 +263,24 @@
     font-weight: 500;
     font-size: 14px;
     color: #1a7dbd;
+  
+    border-left: 1px solid #d1d1d1;
+    border-right: 1px solid #d1d1d1;
+    border-bottom: 1px solid #d1d1d1;
 }
-.body__header p{
+.yatissizTutar.active {
+    width: 345px;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    font-size: 14px;
+    color: #1a7dbd;
+    border-left:2px solid #018fec;
+    border-right: 2px solid #018fec;
+    border-bottom: 2px solid #018fec;
+}
+
+.body__header p {
     font-weight: 500;
 }

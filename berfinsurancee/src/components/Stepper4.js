@@ -1,10 +1,38 @@
 import '../styles/Stepper4.css';
+import React, { useState } from 'react';
 import { BsCheckLg } from "react-icons/bs";
+
 
 export function Stepper4() {
     const TeklifNo = "123123";
     const TeklifName = "Tamamlayıcı Sağlık";
     const teklifAmount = "3000";
+    const [isYatisliActive, setIsYatisliActive] = useState(false);
+    const [isYatissizActive, setIsYatissizActive] = useState(false);
+    const [isYatissizHeaderActive, setIsYatissizHeaderActive] = useState(false);
+    const [isYatisliHeaderActive, setIsYatisliHeaderActive] = useState(false);
+    const [isYatisliTutarActive, setIsYatisliTutarActive] = useState(false);
+    const [isYatissizTutarActive, setIsYatissizTutarActive] = useState(false);
+
+    const handleYatisliClick = () => {
+        setIsYatisliActive(true);
+        setIsYatisliHeaderActive(true);
+        setIsYatisliTutarActive(true);
+        setIsYatissizActive(false);
+        setIsYatissizHeaderActive(false);
+        setIsYatissizTutarActive(false);
+    };
+
+    const handleYatissizClick = () => {
+        setIsYatissizHeaderActive(true);
+        setIsYatissizTutarActive(true);
+        setIsYatissizActive(true);
+        setIsYatisliTutarActive(false);
+        setIsYatisliHeaderActive(false);
+        setIsYatisliActive(false);
+
+    };
+
     return (
         <div className="mainDiv"
             style={{
@@ -84,8 +112,8 @@ export function Stepper4() {
 
                 <div className='tableHeader'>
                     <div className='emptyDiv'></div>
-                    <div className='yatisli'>YATIŞLI</div>
-                    <div className='yatisliyatissiz'>YATIŞLI + YATIŞSIZ</div>
+                    <div className={`yatisli ${isYatisliHeaderActive ? 'active' : ''}`} onClick={handleYatisliClick}>YATIŞLI</div>
+                    <div className={`yatisliyatissiz ${isYatissizHeaderActive ? 'active' : ''}`} onClick={handleYatisliClick}>YATIŞLI + YATIŞSIZ</div>
                 </div>
                 <div className='tableBody'>
                     <div className='body__header'>
@@ -110,59 +138,64 @@ export function Stepper4() {
                         <div className='headerText'><p>Yardımcı Tıbbi Malzeme</p></div>
                         <div className='headerText'><p>Diş Hizmet Paketi</p></div>
                     </div>
-                    <div className='body__yatisli'>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
+                    <div className={`body__yatisli ${isYatisliActive ? 'active' : ''}`} id='yatisli' onClick={handleYatisliClick}>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
                         <div className='headerText2'><p>-</p></div>
                         <div className='headerText2'><p>-</p></div>
                         <div className='headerText2'><p>-</p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
                         <div className='headerText2'><p>5000 ₺</p></div>
                         <div className='headerText2'><p>5000 ₺</p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
                         <div className='headerText2'><p>30000 ₺</p></div>
                         <div className='headerText2'><p>30000 ₺</p></div>
                         <div className='headerText2'><p>1500 ₺</p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
                     </div>
-                    <div className='body__yatissiz'>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
+                    <div className={`body__yatissiz ${isYatissizActive ? 'active' : ''}`}
+                        id='yatissiz'
+                        onClick={handleYatissizClick}>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
                         <div className='headerText2'><p>5000 ₺</p></div>
                         <div className='headerText2'><p>5000 ₺</p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div>
                         <div className='headerText2'><p>30000 ₺</p></div>
                         <div className='headerText2'><p>30000 ₺</p></div>
                         <div className='headerText2'><p>1500 ₺</p></div>
-                        <div className='headerText2'><p><BsCheckLg style={{color:"#1a7dbd",width:"18px",height:"18px"}}/></p></div> </div>
+                        <div className='headerText2'><p><BsCheckLg style={{ color: "#1a7dbd", width: "18px", height: "18px" }} /></p></div> </div>
                 </div>
+
+
                 <div className='tableAmount'>
-                
+
                     <div className='tutarDiv'>Peşin Tutar </div>
-                    <div className='yatisliTutar'>{teklifAmount} TL</div>
-                    <div className='yatissizTutar'>{teklifAmount} TL</div>
-                
+                    <div className={`yatisliTutar ${isYatisliTutarActive ? 'active' : ''}`}>{teklifAmount} TL</div>
+                    <div className={`yatissizTutar ${isYatissizTutarActive ? 'active' : ''}`}>{teklifAmount} TL</div>
+
                 </div>
             </div>
         </div>
     );
 }
+
 export default Stepper4;
