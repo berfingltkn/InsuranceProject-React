@@ -95,62 +95,7 @@ export function Home() {
             {/* //sık sorulan sorular componenti */}
             <div className='detailComponent'>
                 <AccordionPage />
-                {/* <section class="insurance_detail">
-                    <div class="container">
-                        <div class="insurance_detail_in">
-                            <div class="sss">
-                                <div class="accordion js-accordion" id="homeAccordion">
-                                    <div class="accordion_item js-accordion-item">
-                                        <div class="accordion-header js-accordion-header">
-                                            <i class="icom-dokuman">
-                                                ::before
-                                            </i>
-                                            " Anadolu Sigorta Tamamlayıcı Sağlık Sigortası Detayları "
-                                            ::after
-                                        </div>
-                                        <div class="accordion-body js-accordion-body" style={{display:' block'}}>
-                                            <div class="accordion-body__contents">
-                                                <div class="contents_text">
-                                                    <div class="contents_text_item">
-                                                        <p>
-                                                            <strong>Kimler Yararlanabilir?</strong>
-                                                        </p>
-                                                        <ul>
-                                                            <li>65 yaşından küçük ve SGK - Genel Sağlık Sigortası hak sahibi olan tüm sigortalı adaylarımız Anadolu Tamamlayıcı Sağlık Sigortası’nı ilk kez satın alabilirler.
-                                                                &nbsp;</li>
-                                                            <li>Anadolu Sigorta farkı ile 64 yaşına kadar Tamamlayıcı Sağlık Sigortası Yenileme Garantisi’ne hak kazanmış olan müşterilerimiz 64 yaşından sonra ek prim ödemeden poliçelerini yenileyebilmektedir.
-                                                                &nbsp;</li>
-                                                            <li>0-17 (17 dahil) yaş aralığındaki çocuklar da ebeveynleri olmadan ek prim uygulanarak tek başlarına sigortalanabilmektelerdir.</li>
-                                                        </ul>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion_item js-accordion-item">
-                                        <div class="accordion-header js-accordion-header">
-                                            <i class="icon-neler"></i>
-                                            Neleri Kapsar?
-
-                                        </div>
-                                        <div class="accordion-body js-accordion-body" style={{display:'none'}}>blabla</div>
-                                    </div>
-                                    <div class="accordion_item js-accordion-item">
-                                        <div class="accordion-header js-accordion-header"></div>
-                                        <div class="accordion-body js-accordion-body" style={{display:'none'}}></div>
-                                    </div>
-                                    <div class="accordion_item js-accordion-item">
-                                        <div class="accordion-header js-accordion-header"></div>
-                                        <div class="accordion-body js-accordion-body" style={{display:'none'}}></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a class="btn__url_inline mb-40" href="https://saglik.anadolusigorta.com.tr" title="Tamamlayıcı Sağlık Sigortası Anlaşmalı Sağlık Kurumları">
-                                Tamamlayıcı Sağlık Sigortası Anlaşmalı Sağlık Kurumları</a>
-                        </div>
-                    </div>
-                </section> */}
+                
             </div>
 
             {/* //footer */}

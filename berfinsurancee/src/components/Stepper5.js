@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
 import '../styles/Stepper5.css';
-
+import  babyIcon from '../assets/babyIcon.png';
+import  pregnantIcon  from '../assets/pregnantIcon.png';
 
 export function Stepper5() {
     const TeklifNo = "123123";
@@ -82,8 +83,53 @@ export function Stepper5() {
 
 
                 <fieldset className='checkboxBaby'>
-                <legend className="legendText">Ek teminatlar</legend>
+                    <legend className="legendText">Ek teminatlar</legend>
+                    <p className="policy_additional_explain">Poliçeniz ekleyeceğiniz ek teminatlarla diğer aksiliklere karşı önlem alabilirsiniz.</p>
+                    <div className='ekTeminatlar'>
+                        <div className='dogumDiv'>
+                            <div class="form-check"
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+
+
+                                }}>
+                                <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" ty></input>
+
+                            </div>
+                            <div>
+                                <p className="assurance_header">Doğum Teminatı</p>
+                                <p className="assurance_explain">Tamamlayıcı Sağlık Sigortanıza Doğum Teminatı ekleyerek tüm doktor kontrollerinizi ve doğum masraflarınızı sigortanızla karşılayabilirsiniz.</p>
+                            </div>
+                            <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+                                <img src={pregnantIcon} style={{width:"15px",height:"40px"}}></img>
+                            </div>
+
+                        </div>
+                        <div className='tupBebekDiv'>
+                            <div class="form-check"
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+
+
+                                }}>
+                                <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" ty></input>
+
+                            </div>
+                            <div>
+                                <p className="assurance_header">Tüp Bebek Teminatı</p>
+                                <p className="assurance_explain">Tamamlayıcı Sağlık Sigortanıza Tüp Bebek Teminatı ekleyerek tüm doktor kontrollerinizi sigortanızla karşılayabilirsiniz.</p>
+                            </div>
+                            <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+                                <img src={babyIcon} style={{width:"27px",height:"27px"}}></img>
+                            </div>
+                        </div>
+                    </div>
                 </fieldset>
+
             </div>
         </div>
     );
