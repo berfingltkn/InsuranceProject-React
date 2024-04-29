@@ -2,6 +2,9 @@ import '../styles/Stepper4.css';
 import React, { useState } from 'react';
 import { BsCheckLg } from "react-icons/bs";
 
+import { useSelector, useDispatch, Provider } from 'react-redux';
+import axios from 'axios';
+import { setCoverageYatisli, setCoverageYatissiz,setTotalAmount } from '../store/slice/policySlice.js'
 
 export function Stepper4() {
     const TeklifNo = "123123";
@@ -14,6 +17,9 @@ export function Stepper4() {
     const [isYatisliTutarActive, setIsYatisliTutarActive] = useState(false);
     const [isYatissizTutarActive, setIsYatissizTutarActive] = useState(false);
 
+    const yatisliAmount=0;//burası axios ile db den gelicek
+    const yatissizAmount=0;//burası axios ile db den gelicek
+
     const handleYatisliClick = () => {
         setIsYatisliActive(true);
         setIsYatisliHeaderActive(true);
@@ -21,6 +27,13 @@ export function Stepper4() {
         setIsYatissizActive(false);
         setIsYatissizHeaderActive(false);
         setIsYatissizTutarActive(false);
+
+        dispatch(setCoverageYatisli(true));
+        dispatch(setCoverageYatissiz(false));
+        
+        console.log(totalAmount);
+        console.log("yatisli:",coverageYatisli);
+        console.log("yatissiz:", coverageYatissiz);
     };
 
     const handleYatissizClick = () => {
@@ -31,7 +44,21 @@ export function Stepper4() {
         setIsYatisliHeaderActive(false);
         setIsYatisliActive(false);
 
+        dispatch(setCoverageYatissiz(true));
+        dispatch(setCoverageYatisli(false));
+        console.log("yatissiz:", coverageYatissiz);
+        console.log("yatisli:",coverageYatisli);
     };
+    const dispatch = useDispatch();
+
+    const { coverageYatisli, coverageYatissiz,totalAmount } = useSelector((state) => {
+
+        return {
+            coverageYatisli: state.policySlice.coverageYatisli,
+            coverageYatissiz: state.policySlice.coverageYatissiz,
+            totalAmount:state.policySlice.totalAmount
+        };
+    });
 
     return (
         <div className="mainDiv"
@@ -113,7 +140,7 @@ export function Stepper4() {
                 <div className='tableHeader'>
                     <div className='emptyDiv'></div>
                     <div className={`yatisli ${isYatisliHeaderActive ? 'active' : ''}`} onClick={handleYatisliClick}>YATIŞLI</div>
-                    <div className={`yatisliyatissiz ${isYatissizHeaderActive ? 'active' : ''}`} onClick={handleYatisliClick}>YATIŞLI + YATIŞSIZ</div>
+                    <div className={`yatisliyatissiz ${isYatissizHeaderActive ? 'active' : ''}`} onClick={handleYatissizClick}>YATIŞLI + YATIŞSIZ</div>
                 </div>
                 <div className='tableBody'>
                     <div className='body__header'>

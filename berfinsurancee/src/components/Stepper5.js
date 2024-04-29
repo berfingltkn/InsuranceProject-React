@@ -2,8 +2,34 @@ import React, { createContext, useEffect, useState } from 'react';
 import '../styles/Stepper5.css';
 import  babyIcon from '../assets/babyIcon.png';
 import  pregnantIcon  from '../assets/pregnantIcon.png';
+import { useSelector, useDispatch, Provider } from 'react-redux';
+import axios from 'axios';
+import { setCoverageDogum, setCoverageTupBebek } from '../store/slice/policySlice.js'
 
 export function Stepper5() {
+const dispatch=useDispatch();
+const { coverageDogum, coverageTupBebek } = useSelector((state) => {
+
+    return {
+        coverageDogum: state.policySlice.coverageDogum,
+        coverageTupBebek: state.policySlice.coverageTupBebek
+    };
+});
+
+const handleDogumCheck= (event) => {
+    const isChecked=event.target.checked;
+    dispatch(setCoverageDogum(isChecked));
+    
+    console.log("tup bebek:",coverageTupBebek);
+
+}
+const handleTupBebekCheck = (event) => {
+    const isChecked=event.target.checked;
+    dispatch(setCoverageTupBebek(isChecked));
+    
+    
+    console.log("dogum:",coverageDogum);
+}
     const TeklifNo = "123123";
     const TeklifName = "Tamamlayıcı Sağlık";
     const teklifAmount = "3000";
@@ -95,7 +121,7 @@ export function Stepper5() {
 
 
                                 }}>
-                                <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" ty></input>
+                                <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" onChange={handleDogumCheck}  ></input>
 
                             </div>
                             <div>
@@ -116,7 +142,7 @@ export function Stepper5() {
 
 
                                 }}>
-                                <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" ty></input>
+                                <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" onChange={handleTupBebekCheck}></input>
 
                             </div>
                             <div>
