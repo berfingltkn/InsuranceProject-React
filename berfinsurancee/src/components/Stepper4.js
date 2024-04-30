@@ -4,12 +4,14 @@ import { BsCheckLg } from "react-icons/bs";
 
 import { useSelector, useDispatch, Provider } from 'react-redux';
 import axios from 'axios';
-import { setCoverageYatisli, setCoverageYatissiz,setTotalAmount } from '../store/slice/policySlice.js'
+import { setCoverageYatisli, setCoverageYatissiz, setTotalAmount } from '../store/slice/policySlice.js'
 
 export function Stepper4() {
     const TeklifNo = "123123";
     const TeklifName = "Tamamlayıcı Sağlık";
     const teklifAmount = "3000";
+    const typeYatisli = "YATIŞLI";
+    const typeYatissiz = "YATIŞLI YATIŞSIZ";
     const [isYatisliActive, setIsYatisliActive] = useState(false);
     const [isYatissizActive, setIsYatissizActive] = useState(false);
     const [isYatissizHeaderActive, setIsYatissizHeaderActive] = useState(false);
@@ -17,8 +19,12 @@ export function Stepper4() {
     const [isYatisliTutarActive, setIsYatisliTutarActive] = useState(false);
     const [isYatissizTutarActive, setIsYatissizTutarActive] = useState(false);
 
-    const yatisliAmount=0;//burası axios ile db den gelicek
-    const yatissizAmount=0;//burası axios ile db den gelicek
+    const [yatisliAmount, setYatisliAmount] = useState('');
+    const [yatisliType, setYatisliType] = useState('');
+    const [yatissizType, setYatissizType] = useState('');
+    const [yatissizAmount, setYatissizAmount] = useState('');
+    const [yatisliOfferNo, setYatisliOfferNo] = useState('');
+    const [yatissizOfferNo, setYatissizOfferNo] = useState('');
 
     const handleYatisliClick = () => {
         setIsYatisliActive(true);
@@ -30,10 +36,28 @@ export function Stepper4() {
 
         dispatch(setCoverageYatisli(true));
         dispatch(setCoverageYatissiz(false));
-        
+
         console.log(totalAmount);
-        console.log("yatisli:",coverageYatisli);
+        console.log("yatisli:", coverageYatisli);
         console.log("yatissiz:", coverageYatissiz);
+
+        try {
+            const response = axios.get(`https://localhost:7021/api/coverages/getamountbycoveragetype?type=${typeYatisli}`);
+            response.then((res) => {
+                setYatisliAmount(res.data.data.amount);
+                setYatisliOfferNo(res.data.data.offerNo);
+                setYatisliType(res.data.data.coverageType);
+                setYatissizAmount("");
+                setYatissizOfferNo("");
+                setYatissizType("");
+            }).catch((error) => {
+                console.error('Error fetching data', error);
+            });
+            dispatch(setTotalAmount(yatisliAmount+yatissizAmount));
+            
+        } catch (error) {
+            console.error('Error fetching data', error);
+        }
     };
 
     const handleYatissizClick = () => {
@@ -47,19 +71,42 @@ export function Stepper4() {
         dispatch(setCoverageYatissiz(true));
         dispatch(setCoverageYatisli(false));
         console.log("yatissiz:", coverageYatissiz);
-        console.log("yatisli:",coverageYatisli);
+        console.log("yatisli:", coverageYatisli);
+
+        try {
+            const response = axios.get(`https://localhost:7021/api/coverages/getamountbycoveragetype?type=${typeYatissiz}`);
+            response.then((res) => {
+                setYatisliAmount("");
+                setYatisliOfferNo("");
+                setYatisliType("");
+                
+                setYatissizAmount(res.data.data.amount);
+                setYatissizOfferNo(res.data.data.offerNo);
+                setYatissizType(res.data.data.coverageType);
+            }).catch((error) => {
+                console.error('Error fetching data', error);
+            });
+
+            dispatch(setTotalAmount(yatisliAmount+yatissizAmount));
+           
+        } catch (error) {
+            console.error('Error fetching data', error);
+        }
     };
     const dispatch = useDispatch();
 
-    const { coverageYatisli, coverageYatissiz,totalAmount } = useSelector((state) => {
+    const { coverageYatisli, coverageYatissiz, totalAmount } = useSelector((state) => {
 
         return {
             coverageYatisli: state.policySlice.coverageYatisli,
             coverageYatissiz: state.policySlice.coverageYatissiz,
-            totalAmount:state.policySlice.totalAmount
+            totalAmount: state.policySlice.totalAmount
         };
     });
+    const fetchYatisliData = async (value) => {
 
+
+    };
     return (
         <div className="mainDiv"
             style={{
@@ -103,33 +150,33 @@ export function Stepper4() {
                     }}>
                     <div className="teklif-name" style={{ display: "flex" }}>
                         <div className="teklifNo" style={{
-                            color: "#17a4ff",
+                            color: "#1a7dbd",
                             paddingLeft: "60px",
                             fontWeight: "700",
-                            fontSize: "18px",
+                            
                             marginBottom: "0",
                             marginTop: "0",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
-                        }}> Teklif No: {TeklifNo} </div>
+                        }}> Teklif No: {yatisliOfferNo}{yatissizOfferNo} </div>
                         <div className="teklifName" style={
                             {
                                 color: "",
                                 fontWeight: "600",
-                                fontSize: "18px"
+                                
                             }
-                        }>{TeklifName}</div>
+                        }>{TeklifName} ({yatisliType}{yatissizType})</div>
                     </div>
                     <div className="total">
                         <div style={{
                             paddingRight: "60px",
-                            color: "#17a4ff",
+                            color: "#1a7dbd",
                             fontWeight: "700",
                             fontSize: "18px",
                         }}
 
-                        >Size Özel Tutar : {teklifAmount} TL</div>
+                        >Size Özel Tutar : {yatisliAmount}{yatissizAmount} TL</div>
                     </div>
                 </div>
             </div>
@@ -216,8 +263,8 @@ export function Stepper4() {
                 <div className='tableAmount'>
 
                     <div className='tutarDiv'>Peşin Tutar </div>
-                    <div className={`yatisliTutar ${isYatisliTutarActive ? 'active' : ''}`}>{teklifAmount} TL</div>
-                    <div className={`yatissizTutar ${isYatissizTutarActive ? 'active' : ''}`}>{teklifAmount} TL</div>
+                    <div className={`yatisliTutar ${isYatisliTutarActive ? 'active' : ''}`}>{yatisliAmount} TL</div>
+                    <div className={`yatissizTutar ${isYatissizTutarActive ? 'active' : ''}`}>{yatissizAmount} TL</div>
 
                 </div>
             </div>

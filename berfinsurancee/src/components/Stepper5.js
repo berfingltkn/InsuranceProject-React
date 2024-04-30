@@ -4,15 +4,24 @@ import  babyIcon from '../assets/babyIcon.png';
 import  pregnantIcon  from '../assets/pregnantIcon.png';
 import { useSelector, useDispatch, Provider } from 'react-redux';
 import axios from 'axios';
-import { setCoverageDogum, setCoverageTupBebek } from '../store/slice/policySlice.js'
+import { setCoverageDogum, setCoverageTupBebek,setTotalAmount } from '../store/slice/policySlice.js'
 
 export function Stepper5() {
+    const [dogumAmount, setDogumAmount] = useState('');
+    const [tupBebekAmount, setTupBebekAmount] = useState('');
+    const [dogumOfferNo, setDogumOfferNo] = useState('');
+    const [tupBebekOfferNo, setTupBebekOfferNo] = useState('');
+
+    const dogumText="DOĞUM";
+    const tupBebekText="TÜP BEBEK"
+
 const dispatch=useDispatch();
-const { coverageDogum, coverageTupBebek } = useSelector((state) => {
+const { coverageDogum, coverageTupBebek,totalAmount } = useSelector((state) => {
 
     return {
         coverageDogum: state.policySlice.coverageDogum,
-        coverageTupBebek: state.policySlice.coverageTupBebek
+        coverageTupBebek: state.policySlice.coverageTupBebek,
+        totalAmount:state.policySlice.totalAmount,
     };
 });
 
@@ -20,15 +29,53 @@ const handleDogumCheck= (event) => {
     const isChecked=event.target.checked;
     dispatch(setCoverageDogum(isChecked));
     
-    console.log("tup bebek:",coverageTupBebek);
+        try {
+            const response = axios.get(`https://localhost:7021/api/coverages/getamountbycoveragetype?type=${dogumText}`);
+            response.then((res) => {
+                setDogumAmount(res.data.data.amount);
+                setTupBebekAmount("");
+                setDogumOfferNo(res.data.data.offerNo);
+                setTupBebekOfferNo("")
+    
+            }).catch((error) => {
+                console.error('Error fetching data', error);
+            });
+            dispatch(setTotalAmount(parseInt(totalAmount)+parseInt(dogumAmount)+parseInt(tupBebekAmount)));
+            console.log("total:",totalAmount);
+            
+        } catch (error) {
+            console.error('Error fetching data', error);
+        }
+   
+        console.log('true degil');
+   
+ 
 
 }
 const handleTupBebekCheck = (event) => {
     const isChecked=event.target.checked;
     dispatch(setCoverageTupBebek(isChecked));
     
+  
+        try {
+            const response = axios.get(`https://localhost:7021/api/coverages/getamountbycoveragetype?type=${tupBebekText}`);
+            response.then((res) => {
+                setDogumAmount("");
+                setTupBebekAmount(res.data.data.amount);
+                setDogumOfferNo("");
+                setTupBebekOfferNo(res.data.data.offerNo)
     
-    console.log("dogum:",coverageDogum);
+            }).catch((error) => {
+                console.error('Error fetching data', error);
+            });
+            dispatch(setTotalAmount(parseInt(totalAmount)+parseInt(dogumAmount)+parseInt(tupBebekAmount)));
+            console.log("total:",totalAmount);
+        } catch (error) {
+            console.error('Error fetching data', error);
+        }
+ 
+  
+    
 }
     const TeklifNo = "123123";
     const TeklifName = "Tamamlayıcı Sağlık";
@@ -76,16 +123,16 @@ const handleTupBebekCheck = (event) => {
                         }}>
                         <div className="teklif-name" style={{ display: "flex" }}>
                             <div className="teklifNo" style={{
-                                color: "#17a4ff",
+                                color: "#1a7dbd",
                                 paddingLeft: "60px",
                                 fontWeight: "700",
-                                fontSize: "18px",
+                                
                                 marginBottom: "0",
                                 marginTop: "0",
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
-                            }}> Teklif No: {TeklifNo} </div>
+                            }}> Teklif No: {dogumOfferNo}{tupBebekOfferNo} </div>
                             <div className="teklifName" style={
                                 {
                                     color: "",
@@ -97,12 +144,12 @@ const handleTupBebekCheck = (event) => {
                         <div className="total">
                             <div style={{
                                 paddingRight: "60px",
-                                color: "#17a4ff",
+                                color: "#1a7dbd",
                                 fontWeight: "700",
-                                fontSize: "18px",
+                              
                             }}
 
-                            >Size Özel Tutar : {teklifAmount} TL</div>
+                            >Size Özel Tutar : {dogumAmount}{totalAmount} TL</div>
                         </div>
                     </div>
                 </div>
