@@ -685,7 +685,7 @@ function Stepper() {
                           </Grid>
                         </div>
                       )}
-                      
+
                     </Form>
 
 
@@ -729,20 +729,58 @@ function Stepper() {
                     {/* buttonlar */}
                     <div>
                       <div className='insurancebutton__container'>
-                        {(values.step > 1 && values.step < 6)   && (
+                        {(values.step > 1 && values.step < 6) && (
                           //step 1 den büyükse (2.step,3.step vs.) geri butonu olsun
-                          <button type='button' onClick={prevHandle}>
+                          <button type='button' onClick={prevHandle} className='stepperPageButton'
+                            style={{
+                              borderColor: '#018fec',
+                              width: '188px',
+                              height: '45.36px',
+                              borderRadius: '25px',
+                              backgroundColor: '#018fec',
+                              color: 'white',
+                              fontSize: 'larger',
+                              fontWeight: 'bold',
+                            }}>
                             Geri
                           </button>
-                        ) ||(
-<></>
-                        )}
+                        ) || (values.step==6)&&(
+                            <button className='PaymentPageButton' type='button' onClick={prevHandle}
+                              style={{
+                                borderColor: '#018fec',
+                                width: '184px',
+                                height: '41.36px',
+                                borderRadius: '25px',
+                                backgroundColor: '#018fec',
+                                color: 'white',
+                                fontSize: 'larger',
+                                fontWeight: 'bold',
+                                marginTop:"-152px",
+                                marginRight:"100px",
+                              }}>
+                              Geri
+                            </button>
+                          )}
 
 
 
                         {values.step == values.lastStep && (
                           //sonuncu step e gelince devam buttonu gri renk olsun
-                          <></>
+                          <button className='PaymentPageButton' type='button' 
+                          style={{
+                            borderColor: '#018fec',
+                            width: '184px',
+                            height: '41.36px',
+                            borderRadius: '25px',
+                            backgroundColor: '#018fec',
+                            color: 'white',
+                            fontSize: 'larger',
+                            fontWeight: 'bold',
+                            marginTop:"-152px",
+                            marginRight:"532px"
+                          }}>
+                          Ödeme Yap
+                        </button>
                         ) || (
                             <button type='button' onClick={nextHandle}
                               style={{
@@ -755,6 +793,7 @@ function Stepper() {
                                 fontSize: 'larger',
                                 fontWeight: 'bold'
                               }}
+                              
                               disabled={!checkbox1Checked || !checkbox2Checked}//checkboxların birinin false olması durumunda buttonun disable ı false olucak
                             >Devam</button>
                           )

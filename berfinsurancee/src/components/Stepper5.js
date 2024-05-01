@@ -106,7 +106,7 @@ export function Stepper5() {
            
             const pastTotalAmount=parseInt(currentTotalAmount)-parseInt(tupBebekAmount);
             setCurrentTotalAmount(pastTotalAmount);
-            dispatch(setTotalAmount(currentTotalAmount));
+            dispatch(setTotalAmount(pastTotalAmount));
             console.log("current2:",currentTotalAmount);
             console.log("store total amount ",totalAmount);
         }
