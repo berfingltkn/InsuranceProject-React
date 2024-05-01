@@ -1,10 +1,10 @@
 import React, { createContext, useEffect, useState } from 'react';
 import '../styles/Stepper5.css';
-import  babyIcon from '../assets/babyIcon.png';
-import  pregnantIcon  from '../assets/pregnantIcon.png';
+import babyIcon from '../assets/babyIcon.png';
+import pregnantIcon from '../assets/pregnantIcon.png';
 import { useSelector, useDispatch, Provider } from 'react-redux';
 import axios from 'axios';
-import { setCoverageDogum, setCoverageTupBebek,setTotalAmount } from '../store/slice/policySlice.js'
+import { setCoverageDogum, setCoverageTupBebek, setTotalAmount } from '../store/slice/policySlice.js'
 
 export function Stepper5() {
     const [dogumAmount, setDogumAmount] = useState('');
@@ -12,74 +12,110 @@ export function Stepper5() {
     const [dogumOfferNo, setDogumOfferNo] = useState('');
     const [tupBebekOfferNo, setTupBebekOfferNo] = useState('');
 
-    const dogumText="DOĞUM";
-    const tupBebekText="TÜP BEBEK"
 
-const dispatch=useDispatch();
-const { coverageDogum, coverageTupBebek,totalAmount } = useSelector((state) => {
 
-    return {
-        coverageDogum: state.policySlice.coverageDogum,
-        coverageTupBebek: state.policySlice.coverageTupBebek,
-        totalAmount:state.policySlice.totalAmount,
-    };
-});
-
-const handleDogumCheck= (event) => {
-    const isChecked=event.target.checked;
-    dispatch(setCoverageDogum(isChecked));
-    
-        try {
-            const response = axios.get(`https://localhost:7021/api/coverages/getamountbycoveragetype?type=${dogumText}`);
-            response.then((res) => {
-                setDogumAmount(res.data.data.amount);
-                setTupBebekAmount("");
-                setDogumOfferNo(res.data.data.offerNo);
-                setTupBebekOfferNo("")
-    
-            }).catch((error) => {
-                console.error('Error fetching data', error);
-            });
-            dispatch(setTotalAmount(parseInt(totalAmount)+parseInt(dogumAmount)+parseInt(tupBebekAmount)));
-            console.log("total:",totalAmount);
-            
-        } catch (error) {
-            console.error('Error fetching data', error);
-        }
-   
-        console.log('true degil');
-   
- 
-
-}
-const handleTupBebekCheck = (event) => {
-    const isChecked=event.target.checked;
-    dispatch(setCoverageTupBebek(isChecked));
-    
-  
-        try {
-            const response = axios.get(`https://localhost:7021/api/coverages/getamountbycoveragetype?type=${tupBebekText}`);
-            response.then((res) => {
-                setDogumAmount("");
-                setTupBebekAmount(res.data.data.amount);
-                setDogumOfferNo("");
-                setTupBebekOfferNo(res.data.data.offerNo)
-    
-            }).catch((error) => {
-                console.error('Error fetching data', error);
-            });
-            dispatch(setTotalAmount(parseInt(totalAmount)+parseInt(dogumAmount)+parseInt(tupBebekAmount)));
-            console.log("total:",totalAmount);
-        } catch (error) {
-            console.error('Error fetching data', error);
-        }
- 
-  
-    
-}
-    const TeklifNo = "123123";
+    const dogumText = "DOĞUM";
+    const tupBebekText = "TÜP BEBEK"
     const TeklifName = "Tamamlayıcı Sağlık";
-    const teklifAmount = "3000";
+
+    const dispatch = useDispatch();
+    const { coverageDogum, coverageTupBebek, totalAmount } = useSelector((state) => {
+
+        return {
+            coverageDogum: state.policySlice.coverageDogum,
+            coverageTupBebek: state.policySlice.coverageTupBebek,
+            totalAmount: state.policySlice.totalAmount,
+        };
+    });
+    const initialTotalAmount = useSelector((state) => state.policySlice.totalAmount);
+    const [currentTotalAmount, setCurrentTotalAmount] = useState(initialTotalAmount);
+
+    const handleDogumCheck = (event) => {
+        const isChecked = event.target.checked;
+        if (isChecked==true) {
+            dispatch(setCoverageDogum(isChecked));
+
+            try {
+                const response = axios.get(`https://localhost:7021/api/coverages/getamountbycoveragetype?type=${dogumText}`);
+                response.then((res) => {
+                    setDogumAmount(res.data.data.amount);
+
+                    setDogumOfferNo(res.data.data.offerNo);
+                    setTupBebekOfferNo("")
+                    console.log("tup bebek amount:", tupBebekAmount);
+
+                    const newTotalAmount = parseInt(currentTotalAmount) + parseInt(res.data.data.amount);
+                    setCurrentTotalAmount(newTotalAmount);
+
+                    dispatch(setTotalAmount(newTotalAmount))
+                    console.log("store daki total amount", totalAmount);
+
+                }).catch((error) => {
+                    console.error('Error fetching data', error);
+                });
+
+
+            } catch (error) {
+                console.error('Error fetching data', error);
+            }
+
+        }
+        else if(isChecked==false){
+           
+            const pastTotalAmount=parseInt(currentTotalAmount)-parseInt(dogumAmount);
+            setCurrentTotalAmount(pastTotalAmount);
+            dispatch(setTotalAmount(pastTotalAmount));
+            console.log("current2:",currentTotalAmount);
+            console.log("store total amount ",totalAmount);
+        }
+
+
+    }
+    const handleTupBebekCheck = (event) => {
+        const isChecked = event.target.checked;
+        if (isChecked) {
+            dispatch(setCoverageTupBebek(isChecked));
+
+
+            try {
+                const response = axios.get(`https://localhost:7021/api/coverages/getamountbycoveragetype?type=${tupBebekText}`);
+                response.then((res) => {
+
+                    setTupBebekAmount(res.data.data.amount);
+                    setDogumOfferNo("");
+                    setTupBebekOfferNo(res.data.data.offerNo)
+                    console.log("dogumamount:", dogumAmount);
+                    console.log(totalAmount);
+
+                    const newTotalAmount = parseInt(currentTotalAmount) + parseInt(res.data.data.amount);
+                    setCurrentTotalAmount(newTotalAmount);
+
+                    dispatch(setTotalAmount(newTotalAmount))
+                    console.log("store daki total amount", totalAmount);
+                }).catch((error) => {
+                    console.error('Error fetching data', error);
+                });
+
+            } catch (error) {
+                console.error('Error fetching data', error);
+            }
+
+
+        }
+        else if(isChecked==false){
+           
+            const pastTotalAmount=parseInt(currentTotalAmount)-parseInt(tupBebekAmount);
+            setCurrentTotalAmount(pastTotalAmount);
+            dispatch(setTotalAmount(currentTotalAmount));
+            console.log("current2:",currentTotalAmount);
+            console.log("store total amount ",totalAmount);
+        }
+
+
+
+    }
+
+
     return (
         <div className='babyMainDiv'
             style={{
@@ -126,7 +162,7 @@ const handleTupBebekCheck = (event) => {
                                 color: "#1a7dbd",
                                 paddingLeft: "60px",
                                 fontWeight: "700",
-                                
+
                                 marginBottom: "0",
                                 marginTop: "0",
                                 display: "flex",
@@ -146,10 +182,10 @@ const handleTupBebekCheck = (event) => {
                                 paddingRight: "60px",
                                 color: "#1a7dbd",
                                 fontWeight: "700",
-                              
+
                             }}
 
-                            >Size Özel Tutar : {dogumAmount}{totalAmount} TL</div>
+                            >Size Özel Tutar : {currentTotalAmount} TL</div>
                         </div>
                     </div>
                 </div>
@@ -175,8 +211,8 @@ const handleTupBebekCheck = (event) => {
                                 <p className="assurance_header">Doğum Teminatı</p>
                                 <p className="assurance_explain">Tamamlayıcı Sağlık Sigortanıza Doğum Teminatı ekleyerek tüm doktor kontrollerinizi ve doğum masraflarınızı sigortanızla karşılayabilirsiniz.</p>
                             </div>
-                            <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-                                <img src={pregnantIcon} style={{width:"15px",height:"40px"}}></img>
+                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                <img src={pregnantIcon} style={{ width: "15px", height: "40px" }}></img>
                             </div>
 
                         </div>
@@ -196,8 +232,8 @@ const handleTupBebekCheck = (event) => {
                                 <p className="assurance_header">Tüp Bebek Teminatı</p>
                                 <p className="assurance_explain">Tamamlayıcı Sağlık Sigortanıza Tüp Bebek Teminatı ekleyerek tüm doktor kontrollerinizi sigortanızla karşılayabilirsiniz.</p>
                             </div>
-                            <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-                                <img src={babyIcon} style={{width:"27px",height:"27px"}}></img>
+                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                <img src={babyIcon} style={{ width: "27px", height: "27px" }}></img>
                             </div>
                         </div>
                     </div>

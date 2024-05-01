@@ -201,31 +201,31 @@ function Stepper() {
                       <div className='insuranceprogress__container'>
 
                         <div className='insuranceprogress__circle_info_node'>
-                          <div className={`insuranceprogress__circle${values.step === 1 || values.step === 2 || values.step === 3 || values.step === 4|| values.step === 5|| values.step === 6 ? ' active' : ''}`}></div>
+                          <div className={`insuranceprogress__circle${values.step === 1 || values.step === 2 || values.step === 3 || values.step === 4 || values.step === 5 || values.step === 6 ? ' active' : ''}`}></div>
                           <div className='insuranceprogress__info'>
                             <p>Genel Bilgiler</p>
                           </div>
                         </div>
-                        <div className={`insuranceprogress__line${values.step === 2 || values.step === 3 || values.step === 4|| values.step === 5|| values.step === 6 ? ' active' : ''}`}></div>
+                        <div className={`insuranceprogress__line${values.step === 2 || values.step === 3 || values.step === 4 || values.step === 5 || values.step === 6 ? ' active' : ''}`}></div>
 
                         <div className='insuranceprogress__circle_info_node'>
-                          <div className={`insuranceprogress__circle${values.step === 2 || values.step === 3 || values.step === 4|| values.step === 5|| values.step === 6 ? ' active' : ''}`}></div>
+                          <div className={`insuranceprogress__circle${values.step === 2 || values.step === 3 || values.step === 4 || values.step === 5 || values.step === 6 ? ' active' : ''}`}></div>
                           <div className='insuranceprogress__info'>
                             <p>Anlaşmalı Kurumlar</p>
                           </div>
                         </div>
-                        <div className={`insuranceprogress__line${values.step === 3 || values.step === 4 || values.step === 5|| values.step === 6 ? ' active' : ''}`}></div>
+                        <div className={`insuranceprogress__line${values.step === 3 || values.step === 4 || values.step === 5 || values.step === 6 ? ' active' : ''}`}></div>
 
                         <div className='insuranceprogress__circle_info_node'>
-                          <div className={`insuranceprogress__circle${values.step === 3 || values.step === 4|| values.step === 5|| values.step === 6 ? ' active' : ''}`}></div>
+                          <div className={`insuranceprogress__circle${values.step === 3 || values.step === 4 || values.step === 5 || values.step === 6 ? ' active' : ''}`}></div>
                           <div className='insuranceprogress__info'>
                             <p>Teminat Bilgileri</p>
                           </div>
                         </div>
-                        <div className={`insuranceprogress__line${ values.step === 6 ? ' active' : ''}`}></div>
+                        <div className={`insuranceprogress__line${values.step === 6 ? ' active' : ''}`}></div>
 
                         <div className='insuranceprogress__circle_info_node'>
-                          <div className={`insuranceprogress__circle${values.step === 6  ? ' active' : ''}`}></div>
+                          <div className={`insuranceprogress__circle${values.step === 6 ? ' active' : ''}`}></div>
                           <div className='insuranceprogress__info'>
                             <p>Ödeme Bilgileri</p>
                           </div>
@@ -685,6 +685,7 @@ function Stepper() {
                           </Grid>
                         </div>
                       )}
+                      
                     </Form>
 
 
@@ -709,13 +710,13 @@ function Stepper() {
 
                     {values.step == 4 && (
                       <>
-                       <Stepper4 />
+                        <Stepper4 />
                       </>
                     )}
 
                     {values.step == 5 && (
                       <>
-                       <Stepper5 />
+                        <Stepper5 />
                       </>
                     )}
                     {values.step == 6 && (
@@ -725,43 +726,48 @@ function Stepper() {
                     )}
 
 
+                    {/* buttonlar */}
+                    <div>
+                      <div className='insurancebutton__container'>
+                        {(values.step > 1 && values.step < 6)   && (
+                          //step 1 den büyükse (2.step,3.step vs.) geri butonu olsun
+                          <button type='button' onClick={prevHandle}>
+                            Geri
+                          </button>
+                        ) ||(
+<></>
+                        )}
 
-                    <div className='insurancebutton__container'>
-                      {values.step > 1 && (
-                        //step 1 den büyükse (2.step,3.step vs.) geri butonu olsun
-                        <button type='button' onClick={prevHandle}>
-                          Geri
-                        </button>
-                      )}
 
 
+                        {values.step == values.lastStep && (
+                          //sonuncu step e gelince devam buttonu gri renk olsun
+                          <></>
+                        ) || (
+                            <button type='button' onClick={nextHandle}
+                              style={{
+                                color: checkbox1Checked && checkbox2Checked ? 'white' : 'lightgray',
+                                backgroundColor: checkbox1Checked && checkbox2Checked ? '#018fec' : 'white',
+                                borderColor: checkbox1Checked && checkbox2Checked ? '#018fec' : 'lightgray',
+                                width: '188px',
+                                height: '45.36px',
+                                borderRadius: '25px',
+                                fontSize: 'larger',
+                                fontWeight: 'bold'
+                              }}
+                              disabled={!checkbox1Checked || !checkbox2Checked}//checkboxların birinin false olması durumunda buttonun disable ı false olucak
+                            >Devam</button>
+                          )
+                        }
 
-                      {values.step == values.lastStep && (
-                        //sonuncu step e gelince devam buttonu gri renk olsun
-                        <button disabled='false' type='button' style={{ color: 'lightgray', backgroundColor: 'white', borderColor: 'lightgray' }}>Devam</button>
-
-                      ) || (
-                          <button type='button' onClick={nextHandle}
-                            style={{
-                              color: checkbox1Checked && checkbox2Checked ? 'white' : 'lightgray',
-                              backgroundColor: checkbox1Checked && checkbox2Checked ? '#018fec' : 'white',
-                              borderColor: checkbox1Checked && checkbox2Checked ? '#018fec' : 'lightgray',
-                              width: '188px',
-                              height: '45.36px',
-                              borderRadius: '25px',
-                              fontSize: 'larger',
-                              fontWeight: 'bold'
-                            }}
-                            disabled={!checkbox1Checked || !checkbox2Checked}//checkboxların birinin false olması durumunda buttonun disable ı false olucak
-                          >Devam</button>
-                        )
-                      }
-
+                      </div>
                     </div>
                   </div>
+
                 )
 
               }}
+
 
 
             </Formik>
