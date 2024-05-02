@@ -8,6 +8,7 @@ import { Height, RunCircle } from '@mui/icons-material';
 import { useState } from 'react';
 import { useSelector, useDispatch, Provider } from 'react-redux';
 import { setTcNo, setName, setSurname, setMail, setPhoneNo, setDeclaration, setWeight, setMarketingAuthorization, setHeight } from '../store/slice/stepOneSlice.js'
+import { setPolicyID } from '../store/slice/paymentSlice.js'
 import { useFormikContext } from 'formik';
 import { validationStepper } from '../schemas/stepper-validation.js'
 import axios from 'axios';
@@ -20,7 +21,7 @@ import { Stepper6 } from './Stepper6.js';
 
 function Stepper() {
   const dispatch = useDispatch()
-  const { tcNo, name, surname, phone_no, mail, height, weight, declaration, marketing_authorization } = useSelector((state) => {
+  const { tcNo, name, surname, phone_no, mail, height, weight, declaration, marketing_authorization, policyID, nameOnCart, surnameOnCart, cartNumber, dateCart, paymentType, approvalInformationForm, approvalSellingContract, approvalInformationalText, startDate, endDate, policyType, totalAmount, createDate, coverageYatisli, coverageYatissiz, coverageDogum, coverageTupBebek } = useSelector((state) => {
     //useSelector hook'u, store daki state i okumak için kullanılır 
     //mevcut stati parametre olarak alıyor
     return {
@@ -33,15 +34,36 @@ function Stepper() {
       height: state.stepOne.height,
       weight: state.stepOne.weight,
       declaration: state.stepOne.declaration,
-      marketing_authorization: state.stepOne.marketing_authorization
+      marketing_authorization: state.stepOne.marketing_authorization,
 
+      startDate: state.policySlice.startDate,
+      endDate: state.policySlice.endDate,
+      policyType: state.policySlice.policyType,
+      totalAmount: state.policySlice.totalAmount,
+      createDate: state.policySlice.createDate,
+      coverageYatisli: state.policySlice.coverageYatisli,
+      coverageYatissiz: state.policySlice.coverageYatissiz,
+      coverageDogum: state.policySlice.coverageDogum,
+      coverageTupBebek: state.policySlice.coverageTupBebek,
+
+      policyID: state.paymentSlice.policyID,
+      nameOnCart: state.paymentSlice.nameOnCart,
+      surnameOnCart: state.paymentSlice.surnameOnCart,
+      cartNumber: state.paymentSlice.cartNumber,
+      dateCart: state.paymentSlice.dateCart,
+      paymentType: state.paymentSlice.paymentType,
+      approvalInformationForm: state.paymentSlice.approvalInformationForm,
+      approvalSellingContract: state.paymentSlice.approvalSellingContract,
+      approvalInformationalText: state.paymentSlice.approvalInformationalText,
     };
   });
   console.log(tcNo, name, surname, phone_no, mail, height, weight, declaration, marketing_authorization);
 
   const [checkbox1Checked, setCheckbox1Checked] = useState(false);
   const [checkbox2Checked, setCheckbox2Checked] = useState(false);
-
+  const [policyId, setPolicyId] = useState("");
+  const [type, setType] = useState("");
+  const [offerNoT, setOfferNoT] = useState("");
   const handleCheckbox1Change = (event) => {
     setCheckbox1Checked(event.target.checked);
     console.log(checkbox1Checked);
@@ -122,7 +144,100 @@ function Stepper() {
       console.error('Bir hata oluştu:', error);
     }
   }
+  const addPolicy = async () => {
+    try {
 
+      const storeData = {
+        customerIdNumber: tcNo,
+        startDate: startDate,
+        endDate: endDate,
+        policyType: policyType,
+        createDate: createDate,
+        totalAmount: totalAmount,
+
+      };
+
+      const response = await axios.post('https://localhost:7021/api/policies/add', storeData);
+      console.log('Yeni kayıt oluşturuldu', response.data);
+
+    } catch (error) {
+      console.error('Bir hata oluştu:', error);
+    }
+  }
+  const addPolicyCoverage = async () => {
+    try {
+
+
+      const response = await axios.get(`https://localhost:7021/api/policies/getpolicyidbytcno?customerIdNumber=${tcNo}`);
+      setPolicyId(response.data.data.policyId);
+      dispatch(setPolicyID(response.data.data.policyId));
+
+      if (coverageYatisli == true) {
+        setType("YATIŞLI");
+        const responseOfferNo = await axios.get(`https://localhost:7021/api/coverages/GetOfferNoByCoverageType?type=${type}`);
+        setOfferNoT(responseOfferNo.data.data.offerNo);
+        const storeData = {
+          policyID: policyID,
+          OfferNO: offerNoT
+
+        };
+
+        const response = await axios.post('https://localhost:7021/api/customers/add', storeData);
+        console.log("policyCoverage eklendiii");
+
+      }
+      else if (coverageYatissiz == true) {
+        setType("YATIŞSIZ");
+        const responseOfferNo = await axios.get(`https://localhost:7021/api/coverages/GetOfferNoByCoverageType?type=${type}`);
+        setOfferNoT(responseOfferNo.data.data.offerNo);
+        const storeData = {
+          policyID: policyID,
+          OfferNO: offerNoT
+
+        };
+
+        const response = await axios.post('https://localhost:7021/api/customers/add', storeData);
+        console.log("policyCoverage eklendiii");
+
+      }
+      else if (coverageDogum == true) {
+        setType("DOĞUM");
+        const responseOfferNo = await axios.get(`https://localhost:7021/api/coverages/GetOfferNoByCoverageType?type=${type}`);
+        setOfferNoT(responseOfferNo.data.data.offerNo);
+        const storeData = {
+          policyID: policyID,
+          OfferNO: offerNoT
+
+        };
+
+        const response = await axios.post('https://localhost:7021/api/customers/add', storeData);
+        console.log("policyCoverage eklendiii");
+
+      }
+      else if (coverageTupBebek == true) {
+        setType("TÜP BEBEK");
+        const responseOfferNo = await axios.get(`https://localhost:7021/api/coverages/GetOfferNoByCoverageType?type=${type}`);
+        setOfferNoT(responseOfferNo.data.data.offerNo);
+        const storeData = {
+          policyID: policyID,
+          OfferNO: offerNoT
+
+        };
+
+        const response = await axios.post('https://localhost:7021/api/customers/add', storeData);
+        console.log("policyCoverage eklendiii");
+
+      }
+    } catch (error) {
+      console.error('Bir hata oluştu:', error);
+    }
+  }
+
+  const addAllTable = () => {
+
+    addPolicy();
+    addPolicyCoverage();
+  }
   return (
     <div className="stepper">
       <div class="complementary_general-info__main">
@@ -744,43 +859,43 @@ function Stepper() {
                             }}>
                             Geri
                           </button>
-                        ) || (values.step==6)&&(
-                            <button className='PaymentPageButton' type='button' onClick={prevHandle}
-                              style={{
-                                borderColor: '#018fec',
-                                width: '184px',
-                                height: '41.36px',
-                                borderRadius: '25px',
-                                backgroundColor: '#018fec',
-                                color: 'white',
-                                fontSize: 'larger',
-                                fontWeight: 'bold',
-                                marginTop:"-152px",
-                                marginRight:"100px",
-                              }}>
-                              Geri
-                            </button>
-                          )}
+                        ) || (values.step == 6) && (
+                          <button className='PaymentPageButton' type='button' onClick={prevHandle}
+                            style={{
+                              borderColor: '#018fec',
+                              width: '184px',
+                              height: '41.36px',
+                              borderRadius: '25px',
+                              backgroundColor: '#018fec',
+                              color: 'white',
+                              fontSize: 'larger',
+                              fontWeight: 'bold',
+                              marginTop: "-152px",
+                              marginRight: "100px",
+                            }}>
+                            Geri
+                          </button>
+                        )}
 
 
 
                         {values.step == values.lastStep && (
                           //sonuncu step e gelince devam buttonu gri renk olsun
-                          <button className='PaymentPageButton' type='button' 
-                          style={{
-                            borderColor: '#018fec',
-                            width: '184px',
-                            height: '41.36px',
-                            borderRadius: '25px',
-                            backgroundColor: '#018fec',
-                            color: 'white',
-                            fontSize: 'larger',
-                            fontWeight: 'bold',
-                            marginTop:"-152px",
-                            marginRight:"532px"
-                          }}>
-                          Ödeme Yap
-                        </button>
+                          <button className='PaymentPageButton' type='button' onClick={addAllTable}
+                            style={{
+                              borderColor: approvalInformationForm == true && approvalSellingContract == true && approvalInformationalText == true ? '#018fec' : 'lightgray',
+                              width: '184px',
+                              height: '41.36px',
+                              borderRadius: '25px',
+                              backgroundColor: approvalInformationForm == true && approvalSellingContract == true && approvalInformationalText == true ? '#018fec' : 'white',
+                              color: approvalInformationForm == true && approvalSellingContract == true && approvalInformationalText == true ? 'white' : 'lightgray',
+                              fontSize: 'larger',
+                              fontWeight: 'bold',
+                              marginTop: "-152px",
+                              marginRight: "532px"
+                            }}>
+                            Ödeme Yap
+                          </button>
                         ) || (
                             <button type='button' onClick={nextHandle}
                               style={{
@@ -793,7 +908,7 @@ function Stepper() {
                                 fontSize: 'larger',
                                 fontWeight: 'bold'
                               }}
-                              
+
                               disabled={!checkbox1Checked || !checkbox2Checked}//checkboxların birinin false olması durumunda buttonun disable ı false olucak
                             >Devam</button>
                           )

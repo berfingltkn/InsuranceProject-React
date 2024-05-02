@@ -100,19 +100,53 @@ height: 491px;
     margin-top: 1em;
     padding: 10px 30px;
     height: 209px;
-}
-/* .insurancebuttonPayment__container {
     display: flex;
-    justify-content: space-evenly;
-    margin-top: 4em;
-  }
-  .insurancebuttonPayment__container button {
-    border-color: #018fec;
-    width: 188px;
-    height: 45.36px;
-    border-radius: 25px;
-    background-color: #018fec;
-    color: white;
-    font-size: larger;
-    font-weight: bold;
-  } */
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.paymentcreditcard__card_front {
+    grid-gap: 10px;
+    color: #adadad;
+    display: grid;
+    gap: 10px;
+    grid-template-rows: repeat(12, 1fr);
+    height: 250px;
+    padding: 30px 50px 0;
+    width: 497px;
+    margin-left: -50px;
+}
+.paymentcreditcard__chip {
+    align-items: flex-end;
+    display: flex;
+    grid-row: 1 / 5;
+    justify-content: space-between;
+    margin-left: 50px;
+}
+.paymentcreditcard__number {
+    align-items: flex-end;
+    display: flex;
+    grid-row: 5 / 7;
+    word-spacing: 20px;
+    margin-left: 50px;
+    width: 397px;
+    height: 27px;
+}
+.paymentcreditcard__expire {
+    font-size: 12px;
+    grid-row: 7 / 9;
+    margin-left: 50px;
+    width: 397px;
+    height: 27px;
+}
+.paymentcreditcard__name {
+    align-items: flex-start;
+    display: flex;
+    font-weight: 600;
+    grid-row: 9 / 13;
+    justify-content: space-between;
+    margin-left: 50px;
+    width: 397px;
+    height: 65px;
+}
+

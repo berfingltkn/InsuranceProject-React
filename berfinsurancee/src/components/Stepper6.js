@@ -7,11 +7,76 @@ import InputLabel from '@mui/material/InputLabel';
 import { useSelector, useDispatch, Provider } from 'react-redux';
 import axios from 'axios';
 import { Select } from '@mui/material';
+import chip from '../assets/chip.png';
+import { setApprovalInformationForm, setApprovalInformationalText, setApprovalSellingContract, setCartNumber, setNameOnCart, setPaymentType, setSurnameOnCart, setDateCart } from '../store/slice/paymentSlice';
 
 export function Stepper6() {
+    const dispatch = useDispatch()
+    const { policyID, nameOnCart, surnameOnCart, cartNumber, dateCart, paymentType, approvalInformationForm, approvalSellingContract, approvalInformationalText } = useSelector((state) => {
+        //useSelector hook'u, store daki state i okumak için kullanılır 
+        //mevcut stati parametre olarak alıyor
+        return {
+            //bu kod parçası redux store daki stepOne özelliğindeki tcno,name vb. değişkenlerini alıp, bunları ayru değişkenlere atar. Bu sayede, bileşen içerisindeki değerlere kolayca ulaşabiliriz.
+
+
+            policyID: state.paymentSlice.policyID,
+            nameOnCart: state.paymentSlice.nameOnCart,
+            surnameOnCart: state.paymentSlice.surnameOnCart,
+            cartNumber: state.paymentSlice.cartNumber,
+            dateCart: state.paymentSlice.dateCart,
+            paymentType: state.paymentSlice.paymentType,
+            approvalInformationForm: state.paymentSlice.approvalInformationForm,
+            approvalSellingContract: state.paymentSlice.approvalSellingContract,
+            approvalInformationalText: state.paymentSlice.approvalInformationalText,
+        };
+    });
+
+    const [cartNo, setCartNo] = useState('XXXX XXXX XXXX XXXX');
+    const [dateeCart, setDateeCart] = useState('AA/YY');
+    const [name, setName] = useState("İsim ");
+    const [surname, setSurname] = useState("Soyisim");
     const [coverageType, setCoverageType] = useState('');
     const [coverageOfferNo, setCoverageOfferNo] = useState('');
-    const dispatch = useDispatch();
+
+    const [checkbox1Checked, setCheckbox1Checked] = useState(false);
+    const [checkbox2Checked, setCheckbox2Checked] = useState(false);
+    const [checkbox3Checked, setCheckbox3Checked] = useState(false);
+
+    const handleCheckbox1Change = (event) => {
+        const isChecked = event.target.checked;
+        if (isChecked==true) {
+            setCheckbox1Checked(isChecked);
+            dispatch(setApprovalInformationForm(isChecked));
+        } else if(isChecked==false){
+            setCheckbox1Checked(isChecked);
+            dispatch(setApprovalInformationForm(isChecked));
+        }
+    };
+
+    const handleCheckbox2Change = (event) => {
+        const isChecked = event.target.checked;
+        if (isChecked) {
+            setCheckbox2Checked(isChecked);
+            dispatch(setApprovalSellingContract(isChecked));
+        } else {
+            setCheckbox2Checked(isChecked);
+            dispatch(setApprovalSellingContract(isChecked));
+        }
+    };
+
+    const handleCheckbox3Change = (event) => {
+        const isChecked = event.target.checked;
+        if (isChecked) {
+            setCheckbox3Checked(isChecked);
+            dispatch(setApprovalInformationalText(isChecked));
+        } else {
+            setCheckbox3Checked(isChecked);
+            dispatch(setApprovalInformationalText(isChecked));
+        }
+    };
+
+
+
 
     const { coverageYatisli, coverageYatissiz, totalAmount } = useSelector((state) => {
 
@@ -139,6 +204,18 @@ export function Stepper6() {
                                                     name="name"
                                                     classname="input"
                                                     label='İsim'
+                                                    value={nameOnCart}
+                                                    onChange={(e) => {
+
+                                                        const inputValue = e.target.value.replace(/[^A-Za-zğüşıöçĞÜŞİÖÇ\s]/g, ''); // Sadece harfleri al ve boşlukları koru
+                                                        dispatch(setNameOnCart(inputValue));
+                                                        setName(inputValue);
+
+                                                        if (e.target.value == "") {
+                                                            setName("İsim ");
+
+                                                        }
+                                                    }}
                                                     InputLabelProps={{
                                                         shrink: true,
                                                         style: {
@@ -176,7 +253,20 @@ export function Stepper6() {
                                                     as={TextField}
                                                     name="surname"
                                                     classname="input"
+                                                    value={surnameOnCart}
                                                     label='Soyisim'
+                                                    onChange={(e) => {
+                                                        const inputValue = e.target.value.replace(/[^A-Za-zğüşıöçĞÜŞİÖÇ\s]/g, ''); // Sadece harfleri al ve boşlukları koru
+                                                        dispatch(setSurnameOnCart(inputValue));
+
+                                                        setSurname(inputValue);
+
+                                                        if (e.target.value == "") {
+                                                            setSurname("- Soyisim");
+
+                                                        }
+
+                                                    }}
                                                     InputLabelProps={{
                                                         shrink: true,
                                                         style: {
@@ -213,8 +303,22 @@ export function Stepper6() {
                                                 <Field
                                                     as={TextField}
                                                     name="card"
+                                                    value={cartNumber}
                                                     classname="input"
                                                     label='Kart Numarası'
+                                                    onChange={(e) => {
+
+                                                        const inputValue = e.target.value.replace(/\D/g, '').slice(0, 16); // Sadece rakamları al ve en fazla 16 karaktere sınırla
+                                                        const formattedValue = inputValue.replace(/(\d{4})(?=\d)/g, '$1 '); // "XXXX XXXX XXXX XXXX" formatına dönüştür
+                                                        dispatch(setCartNumber(formattedValue));
+                                                        setCartNo(formattedValue);
+
+                                                        if (e.target.value == "") {
+                                                            setCartNo("XXXX XXXX XXXX");
+
+                                                        }
+
+                                                    }}
                                                     InputProps={{
                                                         style: { background: 'white', height: '41.59px' },
                                                     }}
@@ -253,8 +357,26 @@ export function Stepper6() {
                                                     name="card"
                                                     classname="input"
                                                     label='AA/YY'
+                                                    value={dateCart}
+                                                    onChange={(e) => {
+                                                        const inputValue = e.target.value.replace(/\D/g, '').slice(0, 4); // Sadece rakamları al ve en fazla 4 karaktere sınırla
+                                                        let formattedValue = '';
+                                                        if (inputValue.length >= 3) {
+                                                            const month = inputValue.slice(0, 2);
+                                                            const year = inputValue.slice(2, 4);
+                                                            formattedValue = `${month}/${year}`;
+                                                        } else {
+                                                            formattedValue = inputValue;
+                                                        }
+                                                        dispatch(setDateCart(formattedValue));
+                                                        setDateeCart(formattedValue);
+                                                        console.log(dateCart);
+                                                    }}
                                                     InputProps={{
                                                         style: { background: 'white', height: '41.59px' },
+
+
+
                                                     }}
                                                     InputLabelProps={{
                                                         shrink: true,
@@ -291,6 +413,13 @@ export function Stepper6() {
                                                     name="paymentType"
                                                     className="input"
                                                     label='Ödeme Tipi'
+                                                    value={paymentType}
+                                                    onChange={(e) => {
+
+                                                        dispatch(setPaymentType(e.target.value));
+                                                        console.log(paymentType);
+
+                                                    }}
                                                     InputLabelProps={{
                                                         shrink: true,
                                                         style: {
@@ -321,10 +450,10 @@ export function Stepper6() {
                                                     style={{ background: 'white', height: '41.59px', width: "602px" }}
                                                 >
                                                     <option value="">  </option>
-                                                    <option value="creditCard">Peşin</option>
-                                                    <option value="creditCard">2 Taksit</option>
-                                                    <option value="creditCard">3 Taksit</option>
-                                                    <option value="creditCard">6 Taksit</option>
+                                                    <option value="Peşin">Peşin</option>
+                                                    <option value="2 Taksit">2 Taksit</option>
+                                                    <option value="3 Taksit">3 Taksit</option>
+                                                    <option value="6 Taksit">6 Taksit</option>
 
                                                 </Field>
                                             </div>
@@ -360,12 +489,83 @@ export function Stepper6() {
                         <div className='paymentcreditcard__left-container'>
                             <div className='paymentcreditcard__card_container'>
                                 <div className='paymentcreditcard__card_flip'>
-                                    <div></div>
-                                    <div></div>
+                                    <div className='paymentcreditcard__card_front'>
+                                        <div className='paymentcreditcard__chip'>
+                                            <div style={{ height: "75px" }}>
+                                                <img src={chip} style={{ width: "50px", height: "50px" }}></img>
+                                            </div>
+                                        </div>
+                                        <div className='paymentcreditcard__number'>{cartNo}</div>
+                                        <div className='paymentcreditcard__expire'>{dateeCart}</div>
+                                        <div className='paymentcreditcard__name'>{name}{"  "}{surname}</div>
+                                    </div>
+
                                 </div>
                             </div>
                             <div className='paymentcreditcard__info_container'>
+                                <label style={{ width: '452px', height: '50px', display: 'inline-flex', gap: '8px', alignItems: "center" }}>
 
+                                    <div class="form-check"
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+
+
+                                        }}>
+                                        <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" style={{ borderRadius: "4px", width: "11px", height: "11px", border: "2px solid #018fec" }}
+                                            checked={checkbox1Checked}
+                                            onChange={handleCheckbox1Change}
+                                        ></input>
+
+                                    </div>
+                                    <span style={{ letterSpacing: '0.02em', fontSize: "16px" }}>
+                                        <a target="_blank" rel="noreferrer" style={{ color: '#018fec', textDecoration: "underline" }}> Bilgilendirme Formunu</a>
+                                        okudum, onaylıyorum.
+                                    </span>
+                                </label>
+                                <label style={{ width: '452px', height: '50px', display: 'inline-flex', gap: '8px', alignItems: "center" }}>
+
+                                    <div class="form-check"
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+
+
+                                        }}>
+                                        <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" style={{ borderRadius: "4px", width: "11px", height: "11px", border: "2px solid #018fec" }}
+                                            checked={checkbox2Checked}
+                                            onChange={handleCheckbox2Change}
+                                        ></input>
+
+                                    </div>
+                                    <span style={{ letterSpacing: '0.02em', fontSize: "16px" }}>
+                                        <a target="_blank" rel="noreferrer" style={{ color: '#018fec', textDecoration: "underline" }}> Mesafeli Satış Sözleşmesini</a>
+                                        okudum, onaylıyorum.
+                                    </span>
+                                </label>
+                                <label style={{ width: '452px', height: '50px', display: 'inline-flex', gap: '8px', alignItems: "center", marginTop: "20px" }}>
+
+                                    <div class="form-check"
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+
+
+                                        }}>
+                                        <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" style={{ borderRadius: "4px", width: "11px", height: "11px", border: "2px solid #018fec" }}
+                                            checked={checkbox3Checked}
+                                            onChange={handleCheckbox3Change}
+                                        ></input>
+
+                                    </div>
+                                    <span style={{ letterSpacing: '0.02em', fontSize: "16px" }}>
+                                        Kredi Kartı bilgilerimin sonraki işlemlerim için kullanılması amacıyla
+                                        <a target="_blank" rel="noreferrer" style={{ color: '#018fec', textDecoration: "underline" }}> bilgilendirme metni</a>kapsamında saklanmasını kabul ediyorum.
+                                    </span>
+                                </label>
                             </div>
                         </div>
                     </div>
