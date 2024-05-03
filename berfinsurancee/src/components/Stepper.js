@@ -5,7 +5,7 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
 import { Height, RunCircle } from '@mui/icons-material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch, Provider } from 'react-redux';
 import { setTcNo, setName, setSurname, setMail, setPhoneNo, setDeclaration, setWeight, setMarketingAuthorization, setHeight } from '../store/slice/stepOneSlice.js'
 import { setPolicyID } from '../store/slice/paymentSlice.js'
@@ -57,12 +57,12 @@ function Stepper() {
       approvalInformationalText: state.paymentSlice.approvalInformationalText,
     };
   });
-  console.log(tcNo, name, surname, phone_no, mail, height, weight, declaration, marketing_authorization);
+  // console.log(tcNo, name, surname, phone_no, mail, height, weight, declaration, marketing_authorization);
 
   const [checkbox1Checked, setCheckbox1Checked] = useState(false);
   const [checkbox2Checked, setCheckbox2Checked] = useState(false);
   const [policyId, setPolicyId] = useState("");
-  const [type, setType] = useState("");
+
   const [offerNoT, setOfferNoT] = useState("");
   const handleCheckbox1Change = (event) => {
     setCheckbox1Checked(event.target.checked);
@@ -144,6 +144,8 @@ function Stepper() {
       console.error('Bir hata oluştu:', error);
     }
   }
+
+
   const addPolicy = async () => {
     try {
 
@@ -159,6 +161,8 @@ function Stepper() {
 
       const response = await axios.post('https://localhost:7021/api/policies/add', storeData);
       console.log('Yeni kayıt oluşturuldu', response.data);
+      await new Promise(resolve => setTimeout(resolve, 10000));
+      addPolicyCoverage();
 
     } catch (error) {
       console.error('Bir hata oluştu:', error);
@@ -167,76 +171,110 @@ function Stepper() {
   const addPolicyCoverage = async () => {
     try {
 
-
+      //poliçe id yi getiriyoruz
       const response = await axios.get(`https://localhost:7021/api/policies/getpolicyidbytcno?customerIdNumber=${tcNo}`);
-      setPolicyId(response.data.data.policyId);
-      dispatch(setPolicyID(response.data.data.policyId));
+      const policyIdd = response.data.data.policyId;
+      console.log("policyidd", policyIdd);
+      setPolicyId(policyIdd);
+      dispatch(setPolicyID(policyIdd));
 
       if (coverageYatisli == true) {
-        setType("YATIŞLI");
+        const type = "YATIŞLI";
+        //offerNO getiriyoruz
         const responseOfferNo = await axios.get(`https://localhost:7021/api/coverages/GetOfferNoByCoverageType?type=${type}`);
-        setOfferNoT(responseOfferNo.data.data.offerNo);
+        const offerNoResponseControl = responseOfferNo.data.data.offerNo;
+        console.log(offerNoResponseControl);
+        setOfferNoT(offerNoResponseControl);
+        
         const storeData = {
-          policyID: policyID,
-          OfferNO: offerNoT
+          policyID: policyIdd,
+          OfferNO: offerNoResponseControl
 
         };
-
-        const response = await axios.post('https://localhost:7021/api/customers/add', storeData);
-        console.log("policyCoverage eklendiii");
+        try {
+          const response = await axios.post('https://localhost:7021/api/policyCoverages/add', storeData);
+          console.log("policyCoverage eklendiii");
+        } catch (error) {
+          console.error("İstek sırasında bir hata oluştu:", error);
+        }
+       
 
       }
       else if (coverageYatissiz == true) {
-        setType("YATIŞSIZ");
+        const type = "YATIŞLI YATIŞSIZ";
         const responseOfferNo = await axios.get(`https://localhost:7021/api/coverages/GetOfferNoByCoverageType?type=${type}`);
-        setOfferNoT(responseOfferNo.data.data.offerNo);
+        const offerNoResponseControl = responseOfferNo.data.data.offerNo;
+        
+        console.log(offerNoResponseControl);
+       
+        setOfferNoT(offerNoResponseControl);
         const storeData = {
-          policyID: policyID,
-          OfferNO: offerNoT
+          policyID: policyIdd,
+          OfferNO: offerNoResponseControl
 
         };
 
-        const response = await axios.post('https://localhost:7021/api/customers/add', storeData);
-        console.log("policyCoverage eklendiii");
+        try {
+          const response = await axios.post('https://localhost:7021/api/policyCoverages/add', storeData);
+          console.log("policyCoverage eklendiii");
+        } catch (error) {
+          console.error("İstek sırasında bir hata oluştu:", error);
+        }
 
       }
-      else if (coverageDogum == true) {
-        setType("DOĞUM");
+      if (coverageDogum == true) {
+        const type = "DOĞUM";
         const responseOfferNo = await axios.get(`https://localhost:7021/api/coverages/GetOfferNoByCoverageType?type=${type}`);
-        setOfferNoT(responseOfferNo.data.data.offerNo);
+        const offerNoResponseControl = responseOfferNo.data.data.offerNo;
+        console.log(offerNoResponseControl);
+        setOfferNoT(offerNoResponseControl);
+        
         const storeData = {
-          policyID: policyID,
-          OfferNO: offerNoT
+          policyID: policyIdd,
+          OfferNO: offerNoResponseControl
 
         };
-
-        const response = await axios.post('https://localhost:7021/api/customers/add', storeData);
-        console.log("policyCoverage eklendiii");
+        try {
+          const response = await axios.post('https://localhost:7021/api/policyCoverages/add', storeData);
+          console.log("policyCoverage eklendiii");
+        } catch (error) {
+          console.error("İstek sırasında bir hata oluştu:", error);
+        }
 
       }
-      else if (coverageTupBebek == true) {
-        setType("TÜP BEBEK");
+      if (coverageTupBebek == true) {
+        const type = "TÜP BEBEK";
         const responseOfferNo = await axios.get(`https://localhost:7021/api/coverages/GetOfferNoByCoverageType?type=${type}`);
-        setOfferNoT(responseOfferNo.data.data.offerNo);
+        const offerNoResponseControl = responseOfferNo.data.data.offerNo;
+        console.log(offerNoResponseControl);
+        setOfferNoT(offerNoResponseControl);
+        
         const storeData = {
-          policyID: policyID,
-          OfferNO: offerNoT
+          policyID: policyIdd,
+          OfferNO: offerNoResponseControl
 
         };
 
-        const response = await axios.post('https://localhost:7021/api/customers/add', storeData);
-        console.log("policyCoverage eklendiii");
+        try {
+          const response = await axios.post('https://localhost:7021/api/policyCoverages/add', storeData);
+          console.log("policyCoverage eklendiii");
+        } catch (error) {
+          console.error("İstek sırasında bir hata oluştu:", error);
+        }
 
       }
     } catch (error) {
       console.error('Bir hata oluştu:', error);
     }
   }
+  useEffect(() => {
+    console.log("storedaki policyID", policyID);
+    console.log("useState deki policeId", policyId);
+  }, [policyID, policyId]);
+  const addAllTable = async () => {
 
-  const addAllTable = () => {
+    await addPolicy();
 
-    addPolicy();
-    addPolicyCoverage();
   }
   return (
     <div className="stepper">
