@@ -17,9 +17,13 @@ import { Stepper3 } from './Stepper3.js';
 import { Stepper4 } from './Stepper4.js';
 import { Stepper5 } from './Stepper5.js';
 import { Stepper6 } from './Stepper6.js';
-
+import Loader from './Loader.js';
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 
 function Stepper() {
+
+  const [isLoading, setIsLoading] = useState(false);//loader spinner için
   const dispatch = useDispatch()
   const { tcNo, name, surname, phone_no, mail, height, weight, declaration, marketing_authorization, policyID, nameOnCart, surnameOnCart, cartNumber, dateCart, paymentType, approvalInformationForm, approvalSellingContract, approvalInformationalText, startDate, endDate, policyType, totalAmount, createDate, coverageYatisli, coverageYatissiz, coverageDogum, coverageTupBebek } = useSelector((state) => {
     //useSelector hook'u, store daki state i okumak için kullanılır 
@@ -61,7 +65,7 @@ function Stepper() {
 
   const [checkbox1Checked, setCheckbox1Checked] = useState(false);
   const [checkbox2Checked, setCheckbox2Checked] = useState(false);
-  const [policyId, setPolicyId] = useState("");
+
 
   const [offerNoT, setOfferNoT] = useState("");
   const handleCheckbox1Change = (event) => {
@@ -161,7 +165,7 @@ function Stepper() {
 
       const response = await axios.post('https://localhost:7021/api/policies/add', storeData);
       console.log('Yeni kayıt oluşturuldu', response.data);
-      await new Promise(resolve => setTimeout(resolve, 10000));
+      await new Promise(resolve => setTimeout(resolve, 5000));
       addPolicyCoverage();
 
     } catch (error) {
@@ -175,7 +179,6 @@ function Stepper() {
       const response = await axios.get(`https://localhost:7021/api/policies/getpolicyidbytcno?customerIdNumber=${tcNo}`);
       const policyIdd = response.data.data.policyId;
       console.log("policyidd", policyIdd);
-      setPolicyId(policyIdd);
       dispatch(setPolicyID(policyIdd));
 
       if (coverageYatisli == true) {
@@ -185,7 +188,7 @@ function Stepper() {
         const offerNoResponseControl = responseOfferNo.data.data.offerNo;
         console.log(offerNoResponseControl);
         setOfferNoT(offerNoResponseControl);
-        
+
         const storeData = {
           policyID: policyIdd,
           OfferNO: offerNoResponseControl
@@ -197,16 +200,16 @@ function Stepper() {
         } catch (error) {
           console.error("İstek sırasında bir hata oluştu:", error);
         }
-       
+
 
       }
       else if (coverageYatissiz == true) {
         const type = "YATIŞLI YATIŞSIZ";
         const responseOfferNo = await axios.get(`https://localhost:7021/api/coverages/GetOfferNoByCoverageType?type=${type}`);
         const offerNoResponseControl = responseOfferNo.data.data.offerNo;
-        
+
         console.log(offerNoResponseControl);
-       
+
         setOfferNoT(offerNoResponseControl);
         const storeData = {
           policyID: policyIdd,
@@ -228,7 +231,7 @@ function Stepper() {
         const offerNoResponseControl = responseOfferNo.data.data.offerNo;
         console.log(offerNoResponseControl);
         setOfferNoT(offerNoResponseControl);
-        
+
         const storeData = {
           policyID: policyIdd,
           OfferNO: offerNoResponseControl
@@ -248,7 +251,7 @@ function Stepper() {
         const offerNoResponseControl = responseOfferNo.data.data.offerNo;
         console.log(offerNoResponseControl);
         setOfferNoT(offerNoResponseControl);
-        
+
         const storeData = {
           policyID: policyIdd,
           OfferNO: offerNoResponseControl
@@ -267,19 +270,69 @@ function Stepper() {
       console.error('Bir hata oluştu:', error);
     }
   }
+  const addPayment = async () => {
+
+    try {
+
+      const paymentData = {
+        userId: tcNo,
+        policyId: '2',
+        nameOnCart: nameOnCart,
+        surnameOnCart: surnameOnCart,
+        cartNumber: cartNumber,
+        dateCart: dateCart,
+        paymentType: paymentType,
+        approvalInformationForm: approvalInformationForm,
+        approvalSellingContract: approvalSellingContract,
+        approvalInformationalText: approvalInformationalText
+
+
+      };
+      console.log(paymentData);
+      await axios.post(`https://localhost:7021/api/payments/add`, paymentData);
+      console.log("----payment eklendi----");
+
+
+    } catch (error) {
+      console.error('Bir hata oluştu:', error);
+    }
+
+  }
   useEffect(() => {
     console.log("storedaki policyID", policyID);
-    console.log("useState deki policeId", policyId);
-  }, [policyID, policyId]);
-  const addAllTable = async () => {
 
-    await addPolicy();
+  }, [policyID]);
+
+  const addAllTable = async () => {
+    
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+       addPolicy();
+       new Promise(resolve => setTimeout(resolve, 5000));
+       addPayment();
+       console.log("payment eklendi :)");
+       toast.success('Ödeme İşlemi Yapıldı :)', {
+        className: 'custom-toast-success', // Özel sınıf adı
+        bodyClassName: 'custom-toast-body', // Özel gövde sınıf adı
+        progressClassName: 'custom-toast-progress', // Özel ilerleme çubuğu sınıf adı
+        style: {
+          background: 'white', // Arka plan rengi
+          color: 'green', // Yazı rengi
+          fontSize: '20px', // Yazı boyutu
+          width: '300px', // Genişlik
+          height: '90px', // Yükseklik
+        },
+      });
+    }, 3000);
+
 
   }
   return (
     <div className="stepper">
       <div class="complementary_general-info__main">
         <div>
+
           <div >
             <Formik
               validationSchema={validationStepper}
@@ -339,10 +392,18 @@ function Stepper() {
               {({ values, setFieldValue, isValid, dirty }) => {
                 const prevHandle = e => {
                   setFieldValue('step', values.step - 1)
+
                 }
                 const nextHandle = e => {
-                  setFieldValue('step', values.step + 1);
-                  addTcNo();
+                  setIsLoading(true);
+                  setTimeout(() => {
+                    setIsLoading(false);
+                    setFieldValue('step', values.step + 1);
+                    addTcNo();
+                  }, 3000);
+
+
+
                 }
 
 
@@ -394,7 +455,12 @@ function Stepper() {
 
                     <Form >
                       {values.step == 1 && (
+
                         <div class='form-content-area'>
+                          {isLoading && <div className='LoaderDiv'><Loader /></div>}
+
+
+
                           <Grid container spacing={0} className='css-1tz8m30'>
                             <Grid item xs={12} md={6} style={{ paddingTop: '15px' }}>
                               <div className='field-wrapper' >
@@ -837,46 +903,79 @@ function Stepper() {
 
                           </Grid>
                         </div>
+
+
                       )}
 
                     </Form>
 
 
+                    <>
+                      {values.step == 2 && (
+                        <div>
+                          {isLoading && <div className='LoaderDiv'><Loader /></div>}
 
-                    {values.step == 2 && (
-
-                      <Stepper2 />
-
-                    )}
-
-
-
-
-                    {values.step == 3 && (
-                      <>
-                        <Stepper3 />
-                      </>
-                    )}
+                          <Stepper2 />
+                        </div>
 
 
+                      )}
+
+                    </>
 
 
-                    {values.step == 4 && (
-                      <>
-                        <Stepper4 />
-                      </>
-                    )}
+                    <>
+                      {values.step == 3 && (
+                        <div>
+                          {isLoading && <div className='LoaderDiv'><Loader /></div>}
 
-                    {values.step == 5 && (
-                      <>
-                        <Stepper5 />
-                      </>
-                    )}
-                    {values.step == 6 && (
-                      <>
-                        <Stepper6 />
-                      </>
-                    )}
+                          <Stepper3 />
+                        </div>
+
+
+                      )}
+
+                    </>
+
+
+
+                    <>
+                      {values.step == 4 && (
+                        <div>
+                          {isLoading && <div className='LoaderDiv'><Loader /></div>}
+
+                          <Stepper4 />
+                        </div>
+
+
+                      )}
+
+                    </>
+
+                    <>
+                      {values.step == 5 && (
+                        <div>
+                          {isLoading && <div className='LoaderDiv'><Loader /></div>}
+
+                          <Stepper5 />
+                        </div>
+
+
+                      )}
+
+                    </>
+                    <>
+                      {values.step == 6 && (
+                        <div>
+                          {isLoading && <div className='LoaderDiv'><Loader /></div>}
+
+                          <Stepper6 />
+                        </div>
+
+
+                      )}
+
+                    </>
 
 
                     {/* buttonlar */}
@@ -919,6 +1018,7 @@ function Stepper() {
 
                         {values.step == values.lastStep && (
                           //sonuncu step e gelince devam buttonu gri renk olsun
+                          <div style={{marginTop:"-140px",width:"200px",marginRight:"508px"}}>
                           <button className='PaymentPageButton' type='button' onClick={addAllTable}
                             style={{
                               borderColor: approvalInformationForm == true && approvalSellingContract == true && approvalInformationalText == true ? '#018fec' : 'lightgray',
@@ -934,6 +1034,8 @@ function Stepper() {
                             }}>
                             Ödeme Yap
                           </button>
+                          <ToastContainer />
+                          </div>
                         ) || (
                             <button type='button' onClick={nextHandle}
                               style={{

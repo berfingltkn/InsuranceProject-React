@@ -164,3 +164,23 @@ p {
     margin: 3px 14px 0;
     font-size: 12px;
   }
+.LoaderDiv{
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  width: 1600px;
+  height: 780px;
+  position: absolute;
+  transform: translate(10px, 10px);
+  z-index: 9999;
+  top: -3%;
+  left: -1%;
+  background-color: rgba(200, 200, 200, 0.3);
+}
+.custom-toast-success {
+  background-color: green;
+}
+
+.custom-toast-success .toastify-content {
+  color: white;
+}
