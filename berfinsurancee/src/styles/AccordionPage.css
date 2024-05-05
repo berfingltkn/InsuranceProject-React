@@ -15,7 +15,7 @@
     }
     .insurance_detail {
         width: 1583px;
-        height: 636.94px;
+        height: 100%;
     }
     
     .sss {
@@ -61,3 +61,37 @@
     border-radius: 20px;
     
    }
+   .contents_text_item {
+    max-width: 920px;
+    margin: 0 auto 60px;
+}
+.contents_text_item p {
+    font-size: 16px;
+    font-weight: 400;
+    font-stretch: normal;
+    font-style: normal;
+    opacity: .8;
+    color: #191d3a;
+    line-height: 1.63;
+    margin-bottom: 20px;
+}
+.tableArea {
+    margin: 0 auto;
+    border-radius: 16px;
+    background-color: #f8f8f8;
+    padding: 30px 20px 27px;
+}
+.textDivAccordion{
+    font-size: 16px;
+    font-weight: 400;
+    font-stretch: normal;
+    font-style: normal;
+    opacity: .8;
+    color: #191d3a;
+    line-height: 1.63;
+    margin-bottom: 20px;
+
+}
+.insurance_detail_in{
+    padding-bottom: 20px;
+}

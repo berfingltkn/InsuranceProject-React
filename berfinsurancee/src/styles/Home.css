@@ -146,6 +146,7 @@
     position: relative;
 }
 .footerBlue {
+    
     background-color: #2e5dc5;
     padding-top: 31px;
     padding-bottom: 33px;
@@ -191,4 +192,8 @@ ul {
 .footerBlue .footerBlueBottom .footerBlueBottomIn, .footerBlue .footerBlueTop ul {
     justify-content: space-between;
     display: flex;
+}
+.footerDivFixed{
+ 
+    width: 100%;
 }

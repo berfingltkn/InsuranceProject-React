@@ -10,8 +10,36 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import { FaUserCircle } from "react-icons/fa";
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 export function Search() {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl2, setAnchorEl2] = React.useState(null);
+  const [anchorEl3, setAnchorEl3] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const open2 = Boolean(anchorEl2);
+  const open3 = Boolean(anchorEl3);
+  
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleClick2 = (event) => {
+    setAnchorEl2(event.currentTarget);
+  };
+  const handleClose2 = () => {
+    setAnchorEl2(null);
+  };
+  const handleClick3 = (event) => {
+    setAnchorEl3(event.currentTarget);
+  };
+  const handleClose3 = () => {
+    setAnchorEl3(null);
+  };
   return (
     <div className='anaDiv'>
       <div className='filterDiv'>
@@ -53,31 +81,227 @@ export function Search() {
               <Row className="justify-content-center">
                 <Col>
                   <div className="productsMenu">
-                    <a className="productsMegaMenu">
-                      <div className='iconlar'>
-                        <FavoriteBorder />
+
+                    <Button
+                      style={{
+                        width: "152px",
+                        color: "#41576b",
+                        display: "flex",
+                        fontSize: "15px",
+                        fontWeight: "700",
+                        textTransform: "none",
+                      }}
+                      id="basic-button"
+                      aria-controls={open2 ? 'basic-menu' : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={open2 ? 'true' : undefined}
+                      onClick={handleClick2}
+                    ><FaUserCircle style={{ width: "25px", height: "25px", marginRight: "10px" }} />
+                      Ürünler
+                      <ExpandMore />
+                    </Button>
+                    <Menu
+                    style={{borderRadius:"15px"}}
+                      className='urunlerMenuDiv'
+                      id="basic-menu"
+                      anchorEl={anchorEl2}
+                      open={open2}
+                      onClose={handleClose2}
+                      MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                      }}
+                    >
+                      <div style={{ display: 'flex',flexDirection:"column" }}>
+                        <div className='icerik1' style={{display: 'flex', flex: '50%',marginBottom:"50px" }}>
+                        <div style={{ flex: '25%' }}>
+                          <MenuItem style={{fontSize:"15px",color:"#41576b",fontWeight: "700"}}>
+                            Araç
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                            Trafik Sigortaları
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                            Birleşik Kasko Sigortası
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                          Hesaplı Kasko Sigortası
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                            Elektrikli Araç Sigortası
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                            Marka Kasko Sigortaları
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                            Diğer Araç Sigortaları
+                          </MenuItem>
+                        </div>
+                        <div style={{ flex: '25%' }}>
+                          <MenuItem style={{fontSize:"15px",color:"#41576b",fontWeight: "700"}}>
+                            Konut
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                            Konut Sigortası
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                            Zorunlu Deprem Sigortası
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                            Bireysel Çatı Tipi Güneş Enerji Paneli Sigortası
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                            Site / Apartman Yönetimi Ortak Alan Paket Sigortası
+                          </MenuItem>
+                          <MenuItem></MenuItem>
+                          <MenuItem></MenuItem>
+                        </div>
+                        <div style={{ flex: '25%' }}>
+                          <MenuItem style={{fontSize:"15px",color:"#41576b",fontWeight: "700"}}>
+                            Sağlık
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                            Anadolu Sigorta Tamamlayıcı Sağlık Sigortası
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                            Bireysel Sağlık Sigortası
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                            Riskli Hastalıklar Sigortası
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                            Diğer Sağlık Sigortaları
+                          </MenuItem>
+                          <MenuItem></MenuItem>
+                          <MenuItem></MenuItem>
+                        </div>
+                       
+                        </div>
+
+                        <div className='icerik2' style={{display: 'flex', flex: '50%' }}>
+                        <div style={{ flex: '25%' }}>
+                          <MenuItem style={{fontSize:"15px",color:"#41576b",fontWeight: "700"}}>
+                            Ferdi Kaza
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                          Ferdi Kaza Sigortası
+                          </MenuItem >
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                          Gülümseten Paket Ferdi Kaza Sigortası
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                          Güvenli Gelecek Sigortası
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                           
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}></MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}></MenuItem>
+                        </div>
+                        <div style={{ flex: '25%' }}>
+                          <MenuItem style={{fontSize:"15px",color:"#41576b",fontWeight: "700"}}>
+                          Seyahat
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                          Yurt Dışı Seyahat Sigortası
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                          Uçuşum Güvende Sigortası
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                            Yurt Dışı Eğitim Sigortası
+                          </MenuItem>
+                          <MenuItem style={{fontSize:"15px",color:"#191d3a",opacity:".7"}}>
+                            Türkiye'ye Seyahat Sigortası
+                          </MenuItem>
+                          <MenuItem></MenuItem>
+                          <MenuItem></MenuItem>
+                        </div>
+                        <div style={{ flex: '25%' }}>
+                          <MenuItem></MenuItem>
+                          <MenuItem>
+                       
+                          </MenuItem>
+                          <MenuItem>
+                     
+                          </MenuItem>
+                          <MenuItem>
+                         
+                          </MenuItem>
+                          <MenuItem>
+                           
+                          </MenuItem>
+                          <MenuItem></MenuItem>
+                          <MenuItem></MenuItem>
+                        </div>
+                        <div style={{ flex: '25%' }}>
+                          <MenuItem>
+                          
+                          </MenuItem>
+                          <MenuItem>
+                          
+                          </MenuItem>
+                          <MenuItem>
+                         
+                          </MenuItem>
+                          <MenuItem>
+                            
+                          </MenuItem>
+                          <MenuItem>
+                           
+                          </MenuItem>
+                          <MenuItem>
+                           
+                          </MenuItem>
+                          <MenuItem>
+                           
+                          </MenuItem>
+                        </div>
+                        </div>
                       </div>
 
-                      <div className='textProducts'>Ürünler</div>
-                      <ExpandMore />
-                    </a>
+                    </Menu>
+
                   </div>
                 </Col>
                 <Col>
-                  <div className="kampanyalarMenu">
-                    <a className="kampanyalarMegaMenu">
-                      <div className='iconlar'>
-                        <CampaignOutlined />
-                      </div>
-
-                      <div className='textkampanyalar'>Kampanyalar</div>
+                  <div className="kampanyalarMenu" >
+                  <Button
+                      style={{
+                        width: "152px",
+                        color: "#41576b",
+                        display: "flex",
+                        fontSize: "15px",
+                        fontWeight: "700",
+                        textTransform: "none",
+                      }}
+                      id="basic-button"
+                      aria-controls={open3 ? 'basic-menu' : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={open3 ? 'true' : undefined}
+                      onClick={handleClick3}
+                    ><CampaignOutlined style={{ width: "25px", height: "25px", marginRight: "10px" }} />
+                      Kampanyalar
                       <ExpandMore />
-                    </a>
+                    </Button>
+                    <Menu
+                    
+                      className='urunlerMenuDiv'
+                      id="basic-menu"
+                      anchorEl={anchorEl3}
+                      open={open3}
+                      onClose={handleClose3}
+                      MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                      }}
+                    >
+                      <MenuItem style={{fontSize:"26px",fontWeight:"600",color:"#191d3a",width:"600px",height:"80px"}}><h3>Öne Çıkan Kampanyalar</h3></MenuItem>
+                      <MenuItem style={{color:"#191d3a",width:"600px",height:"50px"}}>Şu an kampanya bulunmamaktadır.</MenuItem>
+                    </Menu>
                   </div>
                 </Col>
                 <Col>
                   <div className="saglikMenu">
-                    <a className="saglikMegaMenu" style={{width:'144px'}}>
+                    <a className="saglikMegaMenu" style={{ width: '144px' }}>
                       <div className='iconlar'>
                         <HealingOutlined />
                       </div>
@@ -111,63 +335,40 @@ export function Search() {
                     </a>
                   </div>
                 </Col>
-
+                {/* hesabım */}
                 <Col>
-                  <Dropdown>
-                    <Dropdown.Toggle
-                      className="btn btn-success dropdown-toggle "
-                      style={{
-                        width:'120px',
-                        height:'22px',
-                        borderRadius: '35px',
-                        background: 'linear-gradient(90deg, #2a5bc6 0, #4f99ed 100%)',
-                        color: '#fff',
-                        padding: '13px 23px',
-                        marginRight: 0,
-                        verticalAlign: 'middle',
-                        marginTop: 'auto',
-                        marginBottom: 'auto',
-                      }}
-                    >
-                      <FaUserCircle style={{
-                        width:'22px',
-                        height:'22px',
-                        marginRight:'10px'
-                      }}/>
-                      
-
-                      Hesabım
-
-
-
-
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu
-                      style={{
-                        background: 'linear-gradient(90deg, #2a5bc6 0, #4f99ed 100%)',
-                        position: 'absolute',
-                        width: '100%',
-                        padding: '24px 0px 30px',
-                        color: 'white',
-                        textAlign: 'center',
-                        fontSize: '12px'
-                      }}
-                    >
-                      <Dropdown.Item >Bireysel</Dropdown.Item>
-                      <Dropdown.Item >Kurumsal</Dropdown.Item>
-                      <Dropdown.Item >Sağlık Merkezi</Dropdown.Item>
-                      <Dropdown.Item >Hasar Merkezi</Dropdown.Item>
-                      <Dropdown.Item >Müşteri Destek</Dropdown.Item>
-                      <Dropdown.Item >Acente Bul</Dropdown.Item>
-                      <Dropdown.Item >Eksper İşlemleri</Dropdown.Item>
-                      <Dropdown.Item >Acentelik Başvurusu</Dropdown.Item>
-                      <Dropdown.Item >Araştırma Şirketi Başvurusu</Dropdown.Item>
-                      <Dropdown.Item >Anlaşmalı Oto Servis Hizmetleri</Dropdown.Item>
-
-
-                    </Dropdown.Menu>
-                  </Dropdown>
+                  <Button className='buttonHesabim'
+                    style={{ borderRadius: "35px", color: "white", background: "#1976d2", width: "168px", height: "50px", fontSize: "15px", fontWeight: "600", textTransform: "none" }}
+                    id="basic-button"
+                    aria-controls={open ? 'basic-menu' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? 'true' : undefined}
+                    onClick={handleClick}
+                  >
+                    <AccountCircleIcon style={{ marginRight: "8px" }} />
+                    Hesabım
+                  </Button>
+                  <Menu
+                    style={{ top: "5px", display: "flex", flexDirection: "column", alignItems: "center", }}
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                      'aria-labelledby': 'basic-button',
+                    }}
+                  >
+                    <MenuItem onClick={handleClose} style={{ backgroundColor: "#1875f0", color: "white", fontSize: "13px", fontWeight: "700" }}>Bireysel</MenuItem>
+                    <MenuItem onClick={handleClose} style={{ backgroundColor: "#1875f0", color: "white", borderTop: "2px solid #418ef3", fontSize: "13px", fontWeight: "700" }}>Ticari / Kurumsal</MenuItem>
+                    <MenuItem onClick={handleClose} style={{ backgroundColor: "#1875f0", color: "white", fontSize: "13px", fontWeight: "700" }}>Sağlık Merkezi</MenuItem>
+                    <MenuItem onClick={handleClose} style={{ backgroundColor: "#1875f0", color: "white", fontSize: "13px", fontWeight: "700" }}>Hasar Merkezi</MenuItem>
+                    <MenuItem onClick={handleClose} style={{ backgroundColor: "#1875f0", color: "white", borderTop: "2px solid #418ef3", fontSize: "13px", fontWeight: "700" }}>Müşteri Destek</MenuItem>
+                    <MenuItem onClick={handleClose} style={{ backgroundColor: "#1875f0", color: "white", fontSize: "13px", fontWeight: "700" }}>Acente Bul</MenuItem>
+                    <MenuItem onClick={handleClose} style={{ backgroundColor: "#1875f0", color: "white", fontSize: "13px", fontWeight: "700" }}>Eksper İşlemleri</MenuItem>
+                    <MenuItem onClick={handleClose} style={{ backgroundColor: "#1875f0", color: "white", fontSize: "13px", fontWeight: "700", }}>Acentelik Başvurusu</MenuItem>
+                    <MenuItem onClick={handleClose} style={{ backgroundColor: "#1875f0", color: "white", fontSize: "13px", fontWeight: "700" }}>Araştırma Şirketi Başvurusu</MenuItem>
+                    <MenuItem onClick={handleClose} style={{ backgroundColor: "#1875f0", color: "white", fontSize: "13px", fontWeight: "700" }}>Anlaşmalı Oto Servis Hizmetleri</MenuItem>
+                  </Menu>
                 </Col>
               </Row>
             </Container>
