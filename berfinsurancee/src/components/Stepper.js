@@ -19,9 +19,11 @@ import { Stepper5 } from './Stepper5.js';
 import { Stepper6 } from './Stepper6.js';
 import Loader from './Loader.js';
 import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 function Stepper() {
+  const navigate = useNavigate()
 
   const [isLoading, setIsLoading] = useState(false);//loader spinner için
   const dispatch = useDispatch()
@@ -117,15 +119,10 @@ function Stepper() {
   const addTcNo = async () => {
     try {
       const responseTc = await axios.get(`https://localhost:7021/api/customers/getcustomerbytcno?tcno=${tcNo}`);
-      console.log("bakalım ne geliyor", responseTc.data)
-
-      if (!responseTc.data.success) {
-        console.error('API çağrısı başarısız:', responseTc.data.message);
-        return;
-      }
 
       if (!responseTc.data.data) {
         console.log("boş geliyorr")
+    
         // debugger;
         const storeData = {
           tc_no: tcNo,
@@ -144,10 +141,12 @@ function Stepper() {
       } else {
         console.log('Kayıt zaten mevcut', responseTc.data);
       }
+
     } catch (error) {
       console.error('Bir hata oluştu:', error);
+
     }
-  }
+  };
 
 
   const addPolicy = async () => {
@@ -271,9 +270,7 @@ function Stepper() {
     }
   }
   const addPayment = async () => {
-
     try {
-
       const paymentData = {
         userId: tcNo,
         policyId: '2',
@@ -285,49 +282,111 @@ function Stepper() {
         approvalInformationForm: approvalInformationForm,
         approvalSellingContract: approvalSellingContract,
         approvalInformationalText: approvalInformationalText
-
-
       };
       console.log(paymentData);
       await axios.post(`https://localhost:7021/api/payments/add`, paymentData);
       console.log("----payment eklendi----");
 
-
-    } catch (error) {
-      console.error('Bir hata oluştu:', error);
-    }
-
-  }
-  useEffect(() => {
-    console.log("storedaki policyID", policyID);
-
-  }, [policyID]);
-
-  const addAllTable = async () => {
-    
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-       addPolicy();
-       new Promise(resolve => setTimeout(resolve, 5000));
-       addPayment();
-       console.log("payment eklendi :)");
-       toast.success('Ödeme İşlemi Yapıldı :)', {
-        className: 'custom-toast-success', // Özel sınıf adı
-        bodyClassName: 'custom-toast-body', // Özel gövde sınıf adı
-        progressClassName: 'custom-toast-progress', // Özel ilerleme çubuğu sınıf adı
+      toast.success('Ödeme İşlemi Yapıldı', {
+        className: 'custom-toast-success',
+        bodyClassName: 'custom-toast-body',
+        progressClassName: 'custom-toast-progress',
         style: {
-          background: 'white', // Arka plan rengi
-          color: 'green', // Yazı rengi
-          fontSize: '20px', // Yazı boyutu
-          width: '300px', // Genişlik
-          height: '90px', // Yükseklik
+          background: 'white',
+          color: 'green',
+          fontSize: '18px',
+          width: '300px',
+          height: '90px',
         },
       });
-    }, 3000);
+
+      setTimeout(async () => {
+        await new Promise(resolve => setTimeout(resolve, 2000)); // 2 saniye gecikme
+
+        toast.warning('Ana Sayfaya Yönlendiriliyorsunuz', {
+          className: 'custom-toast-success',
+          bodyClassName: 'custom-toast-body',
+          progressClassName: 'custom-toast-progress',
+          style: {
+            background: 'white',
+            color: 'orange',
+            fontSize: '18px',
+            width: '300px',
+            height: '90px',
+          },
+        });
+
+        setTimeout(() => {
+          navigate('/');
+        }, 4000); // 4 saniye gecikme
+      }, 2000); // 2 saniye gecikme
+    } catch (error) {
+      console.error('Bir hata oluştu:', error);
+      toast.error('Hata Oluştu', {
+        className: 'custom-toast-error',
+        bodyClassName: 'custom-toast-body',
+        progressClassName: 'custom-toast-progress',
+        style: {
+          background: 'white',
+          color: 'red',
+          fontSize: '18px',
+          width: '300px',
+          height: '90px',
+        },
+      });
+    }
+  };
+  //  useEffect(() => {
+  //    console.log("tc:", tcNo);
+  //    console.log("name:",name);
+  //    debugger;
+  //    toast.error('Lütfen Bilgilerinizi Giriniz', {
+  //     className: 'custom-toast-error',
+  //     bodyClassName: 'custom-toast-body',
+  //     progressClassName: 'custom-toast-progress',
+  //     style: {
+  //       background: 'white',
+  //       color: 'red',
+  //       fontSize: '18px',
+  //       width: '300px',
+  //       height: '90px',
+  //     },
+  //   }
+  // );
+
+  //  },);
+
+  const addAllTable = async () => {
+    setIsLoading(true);
+    setTimeout(async () => {
+      setIsLoading(false);
 
 
-  }
+      await new Promise(resolve => setTimeout(resolve, 2000)); // 2 saniye gecikme
+      if (nameOnCart == "" || surnameOnCart == "" || cartNumber == "" || dateCart == "" || paymentType == "") {
+        toast.error('Lütfen Kart Bilgilerini Giriniz', {
+          className: 'custom-toast-error',
+          bodyClassName: 'custom-toast-body',
+          progressClassName: 'custom-toast-progress',
+          style: {
+            background: 'white',
+            color: 'red',
+            fontSize: '18px',
+            width: '300px',
+            height: '90px',
+          },
+        });
+      }
+      else {
+        addPolicy();
+        addPayment();
+        console.log("payment eklendi :)");
+        
+      }
+
+
+    }, 3000); // 3 saniye gecikme
+  };
   return (
     <div className="stepper">
       <div class="complementary_general-info__main">
@@ -395,17 +454,40 @@ function Stepper() {
 
                 }
                 const nextHandle = e => {
-                  setIsLoading(true);
-                  setTimeout(() => {
-                    setIsLoading(false);
-                    setFieldValue('step', values.step + 1);
-                    addTcNo();
-                  }, 3000);
+                  if (values.step == 1) {
+                    addTcNo(); // Kaydın eklenip eklenmediğini kontrol etmek için bu işlemi buraya taşıdık
+                    if (tcNo == "" || name == "" || surname == "" || weight == "" || height == "") {
+                      toast.error('Lütfen Bilgilerinizi Giriniz', {
+                        className: 'custom-toast-error',
+                        bodyClassName: 'custom-toast-body',
+                        progressClassName: 'custom-toast-progress',
+                        style: {
+                          background: 'white',
+                          color: 'red',
+                          fontSize: '18px',
+                          width: '300px',
+                          height: '90px',
+                        },
+                      });
+                    }
+                    else {
+                      console.log("bilgiler boş değil")
+                      setIsLoading(true);
+                      setTimeout(() => {
+                        setIsLoading(false);
+                        setFieldValue('step', values.step + 1);
+                      }, 3000);
+                    }
+                  }
+                  else {
+                    setIsLoading(true);
+                    setTimeout(() => {
+                      setIsLoading(false);
+                      setFieldValue('step', values.step + 1);
+                    }, 3000);
+                  }
 
-
-
-                }
-
+                };
 
 
                 return (
@@ -468,11 +550,25 @@ function Stepper() {
                                 <Field as={TextField} name="tcNo" classname="input" placeholder="TC Kimlik No"
                                   inputMode="numeric"
                                   id="tcNo"
-                                  //value={tcNo}
-                                  onBlur={(e) => {
+                                  value={tcNo}
+                                  onChange={(e) => {
                                     const value = e.target.value;
                                     dispatch(setTcNo(value));
+                                  }}
+                                  onBlur={(e) => {
+                                    const value = e.target.value;
+
+                                    dispatch(setTcNo(value));
                                     fetchData(value);
+                                    if (tcNo == "") {
+
+                                      dispatch(setName(""));
+                                      dispatch(setSurname(""));
+                                      dispatch(setPhoneNo(""));
+                                      dispatch(setMail(""));
+                                      dispatch(setWeight(""));
+                                      dispatch(setHeight(""));
+                                    }
 
                                   }}
                                   onKeyDown={(e) => {
@@ -1018,39 +1114,42 @@ function Stepper() {
 
                         {values.step == values.lastStep && (
                           //sonuncu step e gelince devam buttonu gri renk olsun
-                          <div style={{marginTop:"-140px",width:"200px",marginRight:"508px"}}>
-                          <button className='PaymentPageButton' type='button' onClick={addAllTable}
-                            style={{
-                              borderColor: approvalInformationForm == true && approvalSellingContract == true && approvalInformationalText == true ? '#018fec' : 'lightgray',
-                              width: '184px',
-                              height: '41.36px',
-                              borderRadius: '25px',
-                              backgroundColor: approvalInformationForm == true && approvalSellingContract == true && approvalInformationalText == true ? '#018fec' : 'white',
-                              color: approvalInformationForm == true && approvalSellingContract == true && approvalInformationalText == true ? 'white' : 'lightgray',
-                              fontSize: 'larger',
-                              fontWeight: 'bold',
-                              marginTop: "-152px",
-                              marginRight: "532px"
-                            }}>
-                            Ödeme Yap
-                          </button>
-                          <ToastContainer />
+                          <div style={{ marginTop: "-140px", width: "200px", marginRight: "508px" }}>
+                            <button className='PaymentPageButton' type='button' onClick={addAllTable}
+                              style={{
+                                borderColor: approvalInformationForm == true && approvalSellingContract == true && approvalInformationalText == true ? '#018fec' : 'lightgray',
+                                width: '184px',
+                                height: '41.36px',
+                                borderRadius: '25px',
+                                backgroundColor: approvalInformationForm == true && approvalSellingContract == true && approvalInformationalText == true ? '#018fec' : 'white',
+                                color: approvalInformationForm == true && approvalSellingContract == true && approvalInformationalText == true ? 'white' : 'lightgray',
+                                fontSize: 'larger',
+                                fontWeight: 'bold',
+                                marginTop: "-152px",
+                                marginRight: "532px"
+                              }}>
+                              Ödeme Yap
+                            </button>
+                            <ToastContainer />
                           </div>
                         ) || (
-                            <button type='button' onClick={nextHandle}
-                              style={{
-                                color: checkbox1Checked && checkbox2Checked ? 'white' : 'lightgray',
-                                backgroundColor: checkbox1Checked && checkbox2Checked ? '#018fec' : 'white',
-                                borderColor: checkbox1Checked && checkbox2Checked ? '#018fec' : 'lightgray',
-                                width: '188px',
-                                height: '45.36px',
-                                borderRadius: '25px',
-                                fontSize: 'larger',
-                                fontWeight: 'bold'
-                              }}
+                            <div>
+                              <button type='button' onClick={nextHandle}
+                                style={{
+                                  color: checkbox1Checked && checkbox2Checked ? 'white' : 'lightgray',
+                                  backgroundColor: checkbox1Checked && checkbox2Checked ? '#018fec' : 'white',
+                                  borderColor: checkbox1Checked && checkbox2Checked ? '#018fec' : 'lightgray',
+                                  width: '188px',
+                                  height: '45.36px',
+                                  borderRadius: '25px',
+                                  fontSize: 'larger',
+                                  fontWeight: 'bold'
+                                }}
 
-                              disabled={!checkbox1Checked || !checkbox2Checked}//checkboxların birinin false olması durumunda buttonun disable ı false olucak
-                            >Devam</button>
+                                disabled={!checkbox1Checked || !checkbox2Checked}//checkboxların birinin false olması durumunda buttonun disable ı false olucak
+                              >Devam</button>
+                              <ToastContainer />
+                            </div>
                           )
                         }
 

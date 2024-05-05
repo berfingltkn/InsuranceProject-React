@@ -12,15 +12,15 @@ export function Stepper4() {
     const teklifAmount = "3000";
     const typeYatisli = "YATIŞLI";
     const typeYatissiz = "YATIŞLI YATIŞSIZ";
-    const [isYatisliActive, setIsYatisliActive] = useState(false);
+    const [isYatisliActive, setIsYatisliActive] = useState(true);
     const [isYatissizActive, setIsYatissizActive] = useState(false);
     const [isYatissizHeaderActive, setIsYatissizHeaderActive] = useState(false);
-    const [isYatisliHeaderActive, setIsYatisliHeaderActive] = useState(false);
-    const [isYatisliTutarActive, setIsYatisliTutarActive] = useState(false);
+    const [isYatisliHeaderActive, setIsYatisliHeaderActive] = useState(true);
+    const [isYatisliTutarActive, setIsYatisliTutarActive] = useState(true);
     const [isYatissizTutarActive, setIsYatissizTutarActive] = useState(false);
 
-    const [yatisliAmount, setYatisliAmount] = useState('');
-    const [yatisliType, setYatisliType] = useState('');
+    const [yatisliAmount, setYatisliAmount] = useState(3146);
+    const [yatisliType, setYatisliType] = useState('YATIŞLI');
     const [yatissizType, setYatissizType] = useState('');
     const [yatissizAmount, setYatissizAmount] = useState('');
     const [yatisliOfferNo, setYatisliOfferNo] = useState('');
@@ -37,9 +37,6 @@ export function Stepper4() {
         dispatch(setCoverageYatisli(true));
         dispatch(setCoverageYatissiz(false));
 
-        console.log(totalAmount);
-        console.log("yatisli:", coverageYatisli);
-        console.log("yatissiz:", coverageYatissiz);
 
         try {
             const response = axios.get(`https://localhost:7021/api/coverages/getamountbycoveragetype?type=${typeYatisli}`);
