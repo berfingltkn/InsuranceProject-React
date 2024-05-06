@@ -1,18 +1,18 @@
 import '../styles/Home.css';
 import Search from './Search';
-
+import Chatbot from './Chatbot.js';
 import bootstrap from "bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import { Route, useNavigate } from 'react-router-dom';
 import Insurance from './Insurance';
 import AccordionPage from './AccordionPage';
+import ChatbotAl from './ChatbotAI.js';
 import tamamlayiciSaglik from '../assets/TamamlayiciSaglik.jpg';
 import istiraklogo from '../assets/istirak-logo.png';
+import { useState } from 'react';
 
 export function Home() {
-
-
+  
 
   const navigate = useNavigate()
   const goToInsurancePage = () => {
@@ -20,6 +20,10 @@ export function Home() {
   }
   return (
     <div >
+      <div >
+      <Chatbot />
+      
+      </div>
       <div className="App">
         <Search />
       </div>
@@ -106,14 +110,11 @@ export function Home() {
       </div>
 
       {/* //sık sorulan sorular componenti */}
-      
-        <AccordionPage />
+        <AccordionPage />     
 
-      
 
       {/* //footer */}
-      
-      
+            
       <footer className='footerDivFixed'>
       <section className="footerBlue">
         <div className="containeerr">

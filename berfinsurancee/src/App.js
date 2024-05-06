@@ -5,7 +5,9 @@ import bootstrap from "bootstrap";
 import { Routes,Route } from 'react-router-dom';
 import Home from './components/Home';
 import Insurance from './components/Insurance';
+import Chatbot from './components/Chatbot';
 
+import ChatbotAI from './components/ChatbotAI';
 
 function App() {
   return (
@@ -14,7 +16,9 @@ function App() {
       <Routes>
         <Route path="/" exact element={<Home />} />
         <Route path="/insurance" exact element={<Insurance />} />
+        <Route path="/Chatbot" exact element={<Chatbot />} />
         
+        <Route path="/chat" exact element={<ChatbotAI />} />
       </Routes>
 
     </div>
